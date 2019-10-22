@@ -8,4 +8,6 @@ Procfile set up to run on [heroku](https://devcenter.heroku.com/articles/getting
 
 This will be where we discuss our backend data models and data structures.
 
-We are planning on having users, preferences, events, and messages as our basic data models. 
+We are planning on having users, preferences, events, and messages as our basic data models.
+
+Our backend will be fantastic 
