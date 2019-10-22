@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 // default index route
 app.get('/', (req, res) => {
-  res.send('hi');
+  res.send('hi this is an API response.');
 });
 
 // START THE SERVER
