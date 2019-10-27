@@ -3,6 +3,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
+
+
+// DB Setup
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/ftg';
+mongoose.connect(mongoURI);
+// set mongoose promises to es6 default
+mongoose.Promise = global.Promise;
 
 // initialize
 const app = express();
