@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-
+import User from './models/user_model';
 
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/ftg';
@@ -39,6 +39,9 @@ app.use(bodyParser.json());
 // default index route
 app.get('/', (req, res) => {
   res.send('hi this is an API response.');
+  const user = new User();
+  user.username = 'test';
+  user.save();
 });
 
 // START THE SERVER
