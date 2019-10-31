@@ -13,7 +13,7 @@
   },
   "license": "ISC",
   "engines": {
-    "node": ">=9 <=12",
+    "node": ">=9 <=13",
     "npm": "^5.6.0",
     "yarn": "^1.6.0"
   },
@@ -22,8 +22,10 @@
     "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "jwt-simple": "^0.5.6",
     "mongoose": "^5.7.7",
     "morgan": "^1.9.1"
   },

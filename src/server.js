@@ -5,6 +5,8 @@ import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import User from './models/user_model';
+import apiRouter from './router';
+
 
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/ftg';
@@ -43,7 +45,7 @@ app.get('/', (req, res) => {
   user.username = 'test';
   user.save();
 });
-
+app.use('/api', apiRouter);
 // START THE SERVER
 // =============================================================================
 const port = process.env.PORT || 9090;
