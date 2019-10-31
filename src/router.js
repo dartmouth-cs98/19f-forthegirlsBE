@@ -8,6 +8,8 @@ router.get('/', (req, res) => {
 });
 router.post('/signup', UserController.signup);
 router.get('/users/:id', UserController.getUser);
+router.put('/users/:id', UserController.editUser);
+
 
 // /your routes will go here
 
