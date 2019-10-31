@@ -55,7 +55,6 @@ export const editUser = (req, res) => {
 };
 
 export const getUser = (req, res) => {
-  console.log(req);
   const username = req.params.id;
 
   User.findOne({ username }).then((result) => {
