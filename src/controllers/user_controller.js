@@ -41,6 +41,15 @@ export const signup = (req, res, next) => {
     }
   });
 };
+export const editUser = (req, res) => {
+  const { username } = req.params.id;
+  const newName = req.body.username;
+  User.findOneAndUpdate({ username }).then((result) => {
+    result.username = newName;
+    res.json({ result });
+    result.save();
+  });
+};
 
 export const getUser = (req, res) => {
   console.log('HI');
