@@ -30,7 +30,8 @@ export const signup = (req, res, next) => {
           user.password = password;
           user.save()
             .then((resp) => {
-              res.send({ token: tokenForUser(user) });
+              // res.send({ token: tokenForUser(user) });
+              res.json(resp);
             })
             .catch((error) => {
               console.log(error);
@@ -44,8 +45,10 @@ export const signup = (req, res, next) => {
 export const editUser = (req, res) => {
   const { username } = req.params.id;
   const newName = req.body.username;
+  const newPW = req.body.password;
   User.findOneAndUpdate({ username }).then((result) => {
     result.username = newName;
+    result.password = newPW;
     res.json({ result });
     result.save();
   });
@@ -53,7 +56,7 @@ export const editUser = (req, res) => {
 
 export const getUser = (req, res) => {
   console.log(req);
-  const { username } = req.params.id;
+  const username = req.params.id;
 
   User.findOne({ username }).then((result) => {
     console.log(result);
@@ -64,7 +67,7 @@ export const getUser = (req, res) => {
 };
 
 // encodes a new token for a user object
-function tokenForUser(user) {
-  const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
-}
+// function tokenForUser(user) {
+//   const timestamp = new Date().getTime();
+//   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
+// }
