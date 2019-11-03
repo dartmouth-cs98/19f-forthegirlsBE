@@ -66,6 +66,19 @@ export const getUser = (req, res) => {
   });
 };
 
+
+export const getMatches = (req, res) => {
+  const username = req.params.id;
+
+  User.findOne({ username }).populate('matches').then((result) => {
+    console.log(result);
+    res.json(result.matches);
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
+};
+
+
 export const pairUser = (req, res) => {
   const username1 = req.params.id;
   const username2 = req.body.username;
