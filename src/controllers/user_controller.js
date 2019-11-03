@@ -66,6 +66,26 @@ export const getUser = (req, res) => {
   });
 };
 
+export const pairUser = (req, res) => {
+  const username1 = req.params.id;
+  const username2 = req.body.username;
+  User.findOne({ username: username1 }).populate('matches').then((result) => {
+    User.findOne({ username: username2 }).populate('matches').then((result2) => {
+      result.matches.push(result2.id);
+      result.save();
+      result2.matches.push(result.id);
+      result2.save();
+      res.send('Match added');
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).json(error.body);
+    });
+  }).catch((error) => {
+    console.log(error);
+    res.status(500).json(error.body);
+  });
+};
+
 // encodes a new token for a user object
 // function tokenForUser(user) {
 //   const timestamp = new Date().getTime();
