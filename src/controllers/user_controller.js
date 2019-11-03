@@ -12,6 +12,7 @@ export const signup = (req, res, next) => {
     } else {
       const user = new User();
       user.username = username;
+      user.matches = [];
       user.save()
         .then((resp) => {
           res.send('user has been added');
@@ -28,7 +29,7 @@ export const getUser = (req, res) => {
   console.log(req);
   const { username } = req.params.id;
 
-  User.findOne({ username }).then((result) => {
+  User.findOne({ username }).populate('matches').then((result) => {
     console.log(result);
     res.json({ result });
   }).catch((error) => {
