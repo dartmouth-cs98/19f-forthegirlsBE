@@ -28,6 +28,7 @@ export const signup = (req, res, next) => {
           user.email = email;
           user.username = username;
           user.password = password;
+          user.matches = [];
           user.save()
             .then((resp) => {
               res.send({ token: tokenForUser(user) });
@@ -52,10 +53,9 @@ export const editUser = (req, res) => {
 };
 
 export const getUser = (req, res) => {
-  console.log('HI');
   const username = req.params.id;
 
-  User.findOne({ username }).then((result) => {
+  User.findOne({ username }).populate('matches').then((result) => {
     console.log(result);
     res.json({ result });
   }).catch((error) => {
