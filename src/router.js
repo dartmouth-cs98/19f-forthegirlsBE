@@ -13,6 +13,7 @@ router.get('/users/:id', UserController.getUser);
 router.put('/users/:id', UserController.editUser);
 router.put('/users/pair/:id', UserController.pairUser);
 router.get('/users/matches/:id', UserController.getMatches);
+router.delete('/users/pair/:id', UserController.deletePair);
 
 // /your routes will go here
 
