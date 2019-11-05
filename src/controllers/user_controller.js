@@ -6,6 +6,10 @@ import User from '../models/user_model';
 
 dotenv.config({ silent: true });
 
+export const signin = (req, res, next) => {
+  res.send({ token: tokenForUser(req.user) });
+};
+
 // eslint-disable-next-line consistent-return
 export const signup = (req, res, next) => {
   const { email } = req.body;
@@ -100,7 +104,7 @@ export const pairUser = (req, res) => {
 };
 
 // encodes a new token for a user object
-// function tokenForUser(user) {
-//   const timestamp = new Date().getTime();
-//   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
-// }
+function tokenForUser(user) {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
+}
