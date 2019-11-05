@@ -47,6 +47,6 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
   // or callback(error) in the error case
 };
 // create UserModel class from schema
-const UserModel = mongoose.model('Users', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 
 export default UserModel;
