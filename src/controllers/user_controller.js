@@ -65,9 +65,7 @@ export const editUser = (req, res) => {
 };
 
 export const getUser = (req, res) => {
-  const username = req.params.id;
-
-  User.findOne({ username }).populate('matches').then((result) => {
+  User.findById({ _id: req.params.id }).populate('matches').then((result) => {
     console.log(result);
     res.json({ result });
   }).catch((error) => {
