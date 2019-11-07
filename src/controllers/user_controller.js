@@ -7,7 +7,12 @@ import User from '../models/user_model';
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
-  res.send({ token: tokenForUser(req.user) });
+  const { username } = req.body;
+  User.findOne({ username }).then((result) => {
+    res.send({ token: tokenForUser(req.user), username: req.user.username, id: result.id });
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
 };
 
 // eslint-disable-next-line consistent-return
@@ -35,7 +40,7 @@ export const signup = (req, res, next) => {
           user.matches = [];
           user.save()
             .then((resp) => {
-              res.send({ token: tokenForUser(user) });
+              res.send({ token: tokenForUser(user), username: req.body.username, id: user.id });
               // res.json(resp);
             })
             .catch((error) => {
