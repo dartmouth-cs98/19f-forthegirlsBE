@@ -10,7 +10,7 @@ dotenv.config({ silent: true });
 
 // options for local strategy, we'll use email AS the username
 // not have separate ones
-const localOptions = { usernameField: 'email' };
+const localOptions = { usernameField: 'username' };
 
 // options for jwt strategy
 // we'll pass in the jwt in an `authorization` header
@@ -22,12 +22,12 @@ const jwtOptions = {
 // NOTE: we are not using a bearer token, disregard information about bearer tokens on the internet.
 
 // username + password authentication strategy
-const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
+const localLogin = new LocalStrategy(localOptions, (username, password, done) => {
   // Verify this email and password, call done with the user
   // if it is the correct email and password
   // otherwise, call done with false
   // eslint-disable-next-line consistent-return
-  User.findOne({ email }, (err, user) => {
+  User.findOne({ username }, (err, user) => {
     if (err) { return done(err); }
 
     if (!user) { return done(null, false); }
