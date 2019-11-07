@@ -35,8 +35,8 @@ export const signup = (req, res, next) => {
           user.matches = [];
           user.save()
             .then((resp) => {
-              // res.send({ token: tokenForUser(user) });
-              res.json(resp);
+              res.send({ token: tokenForUser(user) });
+              // res.json(resp);
             })
             .catch((error) => {
               console.log(error);
