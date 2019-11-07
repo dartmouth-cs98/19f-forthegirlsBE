@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as UserController from './controllers/user_controller';
+import * as EventController from './controllers/event_controller';
 import { requireSignin } from './services/passport';
 
 const router = Router();
@@ -14,7 +15,6 @@ router.put('/users/:id', UserController.editUser);
 router.put('/users/pair/:id', UserController.pairUser);
 router.get('/users/matches/:id', UserController.getMatches);
 router.delete('/users/pair/:id', UserController.deletePair);
-
-// /your routes will go here
+router.post('/events/add', EventController.addEvent);
 
 export default router;
