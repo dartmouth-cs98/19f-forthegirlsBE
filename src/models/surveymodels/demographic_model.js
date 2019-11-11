@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 // create a EventSchema with a title field
 const DemographicSchema = new Schema({
-  age: Int16Array,
+  age: Number,
   high: Boolean,
   college: Boolean,
   post: Boolean,

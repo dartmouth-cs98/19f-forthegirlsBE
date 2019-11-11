@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   username: { type: String, unique: true },
   password: { type: String },
   matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
 });
 UserSchema.set('toJSON', {
   virtuals: true,

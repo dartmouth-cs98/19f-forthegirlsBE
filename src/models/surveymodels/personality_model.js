@@ -2,8 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 // create a EventSchema with a title field
 const PersonalitySchema = new Schema({
-  extraversion: Int16Array,
-  listening: Int16Array,
+  extraversion: Number,
+  listening: Number,
 });
 // EventSchema.set('toJSON', {
 //   virtuals: true,
