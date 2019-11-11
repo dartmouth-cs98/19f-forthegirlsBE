@@ -3,6 +3,12 @@
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
+import Survey from '../models/survey_model';
+import Basic from '../models/surveymodels/basic_model';
+import CS from '../models/surveymodels/cs_model';
+import Demographic from '../models/surveymodels/demographic_model';
+import Education from '../models/surveymodels/education_model';
+import Personality from '../models/surveymodels/personality_model';
 
 dotenv.config({ silent: true });
 
@@ -38,6 +44,18 @@ export const signup = (req, res, next) => {
           user.username = username;
           user.password = password;
           user.matches = [];
+          user.survey = new Survey();
+          user.survey.basic = new Basic();
+          user.survey.cs = new CS();
+          user.survey.demographic = new Demographic();
+          user.survey.education = new Education();
+          user.survey.personality = new Personality();
+          user.survey.save();
+          user.survey.basic.save();
+          user.survey.cs.save();
+          user.survey.demographic.save();
+          user.survey.education.save();
+          user.survey.personality.save();
           user.save()
             .then((resp) => {
               res.send({ token: tokenForUser(user), username: req.body.username, id: user.id });
