@@ -17,6 +17,6 @@ router.get('/users/matches/:id', UserController.getMatches);
 router.delete('/users/pair/:id', UserController.deletePair);
 router.post('/events/add', EventController.addEvent);
 router.post('/events/rsvp/:id', EventController.rsvpEvent);
-
+router.put('/users/survey/:id', UserController.addToSurvey);
 
 export default router;
