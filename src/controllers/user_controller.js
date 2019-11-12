@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
 import jwt from 'jwt-simple';
@@ -145,3 +146,21 @@ function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
+
+export const addToSurvey = (req, res) => {
+  const username = req.params.id;
+  User.findOne({ username }).then((result) => {
+    const fields = Object.keys(req.body);
+    console.log('HERE');
+    for (let i = 0; i < fields.length; i++) {
+      console.log('HERE');
+      console.log(fields[i]);
+      result[fields[i]] = req.body[fields[i]];
+    }
+    result.save();
+    console.log(fields);
+    res.json({ result });
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
+};
