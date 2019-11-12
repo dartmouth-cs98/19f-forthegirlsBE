@@ -7,7 +7,52 @@ const UserSchema = new Schema({
   username: { type: String, unique: true },
   password: { type: String },
   matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
+  // survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
+
+  // SURVEY QUESTIONS:
+
+  // Basic
+  firstName: String,
+  lastName: String,
+
+  // CS:
+  front: Boolean,
+  back: Boolean,
+  small: Boolean,
+  medium: Boolean,
+  large: Boolean,
+  meritocratic: Boolean,
+  nurturing: Boolean,
+  fratty: Boolean,
+  fast: Boolean,
+  organized: Boolean,
+  stable: Boolean,
+  formal: Boolean,
+  relaxed: Boolean,
+  web: Boolean,
+  users: Boolean,
+  design: Boolean,
+  mobile: Boolean,
+  security: Boolean,
+  algorithms: Boolean,
+  storage: Boolean,
+
+  // Demographic
+  age: Number,
+  high: Boolean,
+  college: Boolean,
+  post: Boolean,
+
+  // Education
+  highName: String,
+  collegeName: String,
+  gradYear: String,
+  job: String,
+
+  // Personality
+  extraversion: Number,
+  listening: Number,
+
 });
 UserSchema.set('toJSON', {
   virtuals: true,
