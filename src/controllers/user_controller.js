@@ -38,18 +38,18 @@ export const signup = (req, res, next) => {
           user.username = username;
           user.password = password;
           user.matches = [];
-          user.survey = new Survey();
-          user.survey.basic = new Basic();
-          user.survey.cs = new CS();
-          user.survey.demographic = new Demographic();
-          user.survey.education = new Education();
-          user.survey.personality = new Personality();
-          user.survey.save();
-          user.survey.basic.save();
-          user.survey.cs.save();
-          user.survey.demographic.save();
-          user.survey.education.save();
-          user.survey.personality.save();
+          // user.survey = new Survey();
+          // user.survey.basic = new Basic();
+          // user.survey.cs = new CS();
+          // user.survey.demographic = new Demographic();
+          // user.survey.education = new Education();
+          // user.survey.personality = new Personality();
+          // user.survey.save();
+          // user.survey.basic.save();
+          // user.survey.cs.save();
+          // user.survey.demographic.save();
+          // user.survey.education.save();
+          // user.survey.personality.save();
           user.save()
             .then((resp) => {
               res.send({ token: tokenForUser(user), username: req.body.username, id: user.id });
