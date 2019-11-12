@@ -17,11 +17,4 @@ router.get('/users/matches/:id', UserController.getMatches);
 router.delete('/users/pair/:id', UserController.deletePair);
 router.post('/events/add', EventController.addEvent);
 
-/** survey routes */
-router.post('/survey/basicInfo/:id');
-router.post('/survey/cs/:id');
-router.post('/survey/demo/:id');
-router.post('/survey/edu/:id');
-router.post('/survey/personal/:id');
-
 export default router;
