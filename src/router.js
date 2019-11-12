@@ -16,5 +16,7 @@ router.put('/users/pair/:id', UserController.pairUser);
 router.get('/users/matches/:id', UserController.getMatches);
 router.delete('/users/pair/:id', UserController.deletePair);
 router.post('/events/add', EventController.addEvent);
+router.post('/events/rsvp/:id', EventController.rsvpEvent);
+
 
 export default router;

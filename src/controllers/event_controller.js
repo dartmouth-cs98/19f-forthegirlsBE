@@ -25,3 +25,16 @@ export const addEvent = (req, res) => {
       console.log(error);
     });
 };
+
+export const rsvpEvent = (req, res) => {
+  const { userID } = req.body;
+
+  Event.findById({ _id: req.params.id }).populate('rsvps').then((result) => {
+    console.log(` hi there${userID}`);
+    result.rsvps.push(userID);
+    res.json(result.rsvps);
+    result.save();
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
+};
