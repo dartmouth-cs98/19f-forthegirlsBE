@@ -14,10 +14,14 @@ const UserSchema = new Schema({
   // Basic
   firstName: String,
   lastName: String,
+  highSchool: String,
+  collegeName: String,
+  gradYear: String,
+  currentJob: String,
 
   // CS:
-  front: Boolean,
-  back: Boolean,
+  frontEnd: Boolean,
+  backEend: Boolean,
   small: Boolean,
   medium: Boolean,
   large: Boolean,
@@ -30,7 +34,7 @@ const UserSchema = new Schema({
   formal: Boolean,
   relaxed: Boolean,
   web: Boolean,
-  users: Boolean,
+  user: Boolean,
   design: Boolean,
   mobile: Boolean,
   security: Boolean,
@@ -39,20 +43,23 @@ const UserSchema = new Schema({
 
   // Demographic
   age: Number,
-  high: Boolean,
+  hs: Boolean,
   college: Boolean,
-  post: Boolean,
-
-  // Education
-  highName: String,
-  collegeName: String,
-  gradYear: String,
-  job: String,
+  pg: Boolean,
 
   // Personality
   extraversion: Number,
   listening: Number,
 
+  // Prompts
+  promptOneQuestion: String,
+  promptOneAnswer: String,
+  promptTwoQuestion: String,
+  promptTwoAnswer: String,
+  promptThreeQuestion: String,
+  promptThreeAnswer: String,
+  introextro: Number,
+  listenFollow: Number,
 });
 UserSchema.set('toJSON', {
   virtuals: true,
