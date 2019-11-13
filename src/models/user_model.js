@@ -18,6 +18,7 @@ const UserSchema = new Schema({
   collegeName: String,
   gradYear: String,
   currentJob: String,
+  hometown: String,
 
   // CS:
   frontEnd: Boolean,
