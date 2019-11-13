@@ -38,3 +38,25 @@ export const rsvpEvent = (req, res) => {
     res.status(500).json({ error });
   });
 };
+
+export const getEvents = (req, res) => {
+  // got this from mongoosejs docs online
+  Event.find({})
+    .then((result) => {
+      // res.json({ message: 'found all the posts!' });
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getEvent = (req, res) => {
+  Event.findOne({ _id: req.params.id })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
