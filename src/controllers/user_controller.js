@@ -151,9 +151,7 @@ export const addToSurvey = (req, res) => {
   const username = req.params.id;
   User.findOne({ username }).then((result) => {
     const fields = Object.keys(req.body);
-    console.log('HERE');
     for (let i = 0; i < fields.length; i++) {
-      console.log('HERE');
       console.log(fields[i]);
       result[fields[i]] = req.body[fields[i]];
     }
