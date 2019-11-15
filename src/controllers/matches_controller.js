@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
 import dotenv from 'dotenv';
@@ -36,6 +37,60 @@ export const addMatch = (req, res) => {
           }
         });
       });
+    });
+  });
+};
+
+const lookForMatch = (user1Id, user2Id, array) => {
+  Match.find({ user1: user1Id, user2: user2Id }).then((matchRes1) => {
+    if (matchRes1.length === 0) {
+      console.log('match res 1 not found');
+      // var matchRes2 = Match.find({ user1: response[i].id, user2: currUser.id })
+      Match.find({ user1: user2Id, user2: user1Id }).then((matchRes2) => {
+        if (matchRes2.length === 0) {
+          console.log('match res 2 not found');
+          array.push(user1Id);
+          //  console.log(resu)
+          console.log('result array:');
+          console.log(array);
+          return (array);
+        }
+      });
+    }
+  });
+};
+
+let resultArray = [];
+export const getPotentialMatches = (req, res) => {
+  resultArray = [];
+  // let newArray;
+  const { username } = req.params.id;
+  User.findOne(username).then((currUser) => {
+    User.find().then((response) => {
+      for (let i = 0; i < response.length; i += 1) {
+        if (currUser.id !== response[i].id) {
+          // newArray = lookForMatch(currUser.id, response[i].id, resultArray);
+          // resultArray = newArray;
+
+
+          Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
+            if (matchRes1.length === 0) {
+              console.log('match res 1 not found');
+              // var matchRes2 = Match.find({ user1: response[i].id, user2: currUser.id })
+              Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
+                if (matchRes2.length === 0) {
+                  console.log('match res 2 not found');
+                  resultArray.push(response[i].id);
+                  //  console.log(resu)
+                  console.log('result array:');
+                  console.log(resultArray);
+                }
+              });
+            }
+          });
+        }
+      }
+      res.send(resultArray);
     });
   });
 };
