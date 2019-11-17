@@ -16,8 +16,6 @@ router.put('/users/:id', UserController.editUser);
 // router.put('/users/pair/:id', UserController.pairUser);
 router.post('/matches/pair', MatchesController.addMatch);
 router.get('/matches/:id', MatchesController.getPotentialMatches);
-router.get('/users/matches/:id', UserController.getMatches);
-router.delete('/users/pair/:id', UserController.deletePair);
 router.get('/events/', EventController.getEvents);
 router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
