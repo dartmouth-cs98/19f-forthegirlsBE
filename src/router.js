@@ -16,6 +16,7 @@ router.put('/users/:id', UserController.editUser);
 // router.put('/users/pair/:id', UserController.pairUser);
 router.post('/matches/pair', MatchesController.addMatch);
 router.get('/matches/:id', MatchesController.getPotentialMatches);
+router.get('/matches/potential/:id', MatchesController.getMatches);
 router.get('/events/', EventController.getEvents);
 router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
