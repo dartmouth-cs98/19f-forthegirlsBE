@@ -73,3 +73,39 @@ export const getPotentialMatches = (req, res) => {
     });
   });
 };
+
+export const getMatches = (req, res) => {
+  const resultArray = [];
+  const promises = [];
+  const u = req.params.id;
+  User.findOne({ username: u }).then((currUser) => {
+    User.find().then((response) => {
+      for (let i = 0; i < response.length; i += 1) {
+        if (currUser.id !== response[i].id) {
+          promises.push(
+            new Promise(((resolve, reject) => {
+              Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
+                if (matchRes1.length === 0) {
+                  Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
+                    if (matchRes2.length === 0) {
+                      resolve(resultArray);
+                    } else {
+                      resultArray.push(response[i].id);
+                      resolve(resultArray);
+                    }
+                  });
+                } else {
+                  resultArray.push(response[i].id);
+                  resolve(resultArray);
+                }
+              });
+            })),
+          );
+        }
+      }
+      Promise.all(promises).then(() => {
+        res.send(resultArray);
+      });
+    });
+  });
+};
