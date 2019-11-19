@@ -13,7 +13,6 @@ router.post('/signup', UserController.signup);
 router.post('/signin', requireSignin, UserController.signin);
 router.get('/users/:id', UserController.getUser);
 router.put('/users/:id', UserController.editUser);
-// router.put('/users/pair/:id', UserController.pairUser);
 router.post('/matches/pair', MatchesController.addMatch);
 router.get('/matches/:id', MatchesController.getMatches);
 router.get('/matches/potential/:id', MatchesController.getPotentialMatches);
