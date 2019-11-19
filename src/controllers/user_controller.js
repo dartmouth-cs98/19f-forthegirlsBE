@@ -71,62 +71,6 @@ export const getUser = (req, res) => {
   });
 };
 
-// REPLACE THESE WITH NEW METHODS:
-
-// export const getMatches = (req, res) => {
-//   const username = req.params.id;
-
-//   User.findOne({ username }).populate('matches').then((result) => {
-//     console.log(result);
-//     res.json(result.matches);
-//   }).catch((error) => {
-//     res.status(500).json({ error });
-//   });
-// };
-
-
-// export const pairUser = (req, res) => {
-//   const username1 = req.params.id;
-//   const username2 = req.body.username;
-//   User.findOne({ username: username1 }).populate('matches').then((result) => {
-//     User.findOne({ username: username2 }).populate('matches').then((result2) => {
-//       result.matches.push(result2.id);
-//       result.save();
-//       result2.matches.push(result.id);
-//       result2.save();
-//       res.send('Match added');
-//     }).catch((error) => {
-//       console.log(error);
-//       res.status(500).json(error.body);
-//     });
-//   }).catch((error) => {
-//     console.log(error);
-//     res.status(500).json(error.body);
-//   });
-// };
-
-// export const deletePair = (req, res) => {
-//   const username1 = req.params.id;
-//   const username2 = req.body.username;
-//   User.findOne({ username: username1 }).populate('matches').then((result) => {
-//     User.findOne({ username: username2 }).populate('matches').then((result2) => {
-//       const index = result.matches.indexOf(result2);
-//       result.matches.pop(index);
-//       result.save();
-//       const index2 = result.matches.indexOf(result);
-//       result2.matches.pop(index2);
-//       result2.save();
-//       res.send('Pair has been deleted');
-//     }).catch((error) => {
-//       console.log(error);
-//       res.status(500).json(error.body);
-//     });
-//   }).catch((error) => {
-//     console.log(error);
-//     res.status(500).json(error.body);
-//   });
-// };
-
 // encodes a new token for a user object
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
