@@ -17,7 +17,11 @@ Heroku URL: https://for-the-girls.herokuapp.com/
     * Sign in: POST on '/signin' that takes the username and password as fields "username" and "password" in the body of the reqest. Returns a token object.
     * Get user: GET on 'users/:id' where the "id" segment of the endpoint is the ID of the relevant user. Returns the appropriate user object.
     * Edit user: PUT on 'users/:id' where the "id" segment of the endpoint is the username of the relevant user and the body of the request contains fields that should be changed.
-* **Events** Stores the events users can post to the app for other women to attend.
+* **Events** Stores the information relevant to each event users can post to the app for other women to attend, including rsvps and logistical information. Handles the following endpoints:
+  * Get event: GET on '/events/:id' where the "id" segment of the endpoint is the ID of the relevant user. Returns the appropriate event object.
+  * Get events: GET on '/events/' where it  returns a list of all the events in our database.
+  * Add event: POST on '/events/add' where the "title", "date", "time", "location", and "description" are saved in the body of the request and adds the event object to the database.
+  * RSVP event: POST on '/events/rsvp/:id' where the "id" segment of the endpoint is the ID of the relevant event, and the ID of the user that has RSVP'd is saved in the body of the request. Fetches the relevant event and adds the user's ID to the event's list of RSVPs. 
 
 * **Matches** Represents matches that have been made between users (mentor/mentee pairs). Matches are stored as ID's referencing each user. Handles the following endpoints:
     * Pair users: POST on '/matches/pair' that takes a user1 and user2 usernames in the body of the request as fields "user1" and "user2" and creates a new Match in the database representing this pair. Prevents duplicate matches regardless of order.
@@ -35,7 +39,7 @@ Then, run `yarn install` to get your node modules up to date, and `yarn dev` to 
 
 ## Deployment
 
-To deploy to our heroku server, you can push the backend to heroku with `git push heroku master`. 
+To deploy to our heroku server, you can push the backend to heroku with `git push heroku master`.
 
 ## Authors
 
