@@ -36,8 +36,7 @@ export const addEvent = (req, res) => {
 export const rsvpEvent = (req, res) => {
   const { userID } = req.body;
 
-  Event.findById({ _id: req.params.id }).populate('rsvps').then((result) => {
-    console.log(` hi there${userID}`);
+  Event.findById({ _id: req.params.id }).then((result) => {
     result.rsvps.push(userID);
     res.json(result.rsvps);
     result.save();
@@ -49,13 +48,13 @@ export const rsvpEvent = (req, res) => {
 export const unrsvpEvent = (req, res) => {
   const { userID } = req.body;
 
-  Event.findById({ _id: req.params.id }).populate('rsvps').then((result) => {
+  Event.findById({ _id: req.params.id }).then((result) => {
     for (let i = result.rsvps.length - 1; i >= 0; i -= 1) {
       if (result.rsvps[i] === userID) {
         result.rsvps.splice(i, 1);
       }
     }
-    res.json(result.rsvps);
+    res.json(result.rsvps.length);
     result.save();
   }).catch((error) => {
     res.status(500).json({ error });
