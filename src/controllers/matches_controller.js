@@ -41,6 +41,15 @@ export const addMatch = (req, res) => {
   });
 };
 
+export const removeMatch = (req, res) => {
+  // const { user1 } = req.body;
+  // const { user2 } = req.body;
+  // const match = new Match();
+  Match.deleteOne({ _id: req.params.id }).then((result) => {
+    res.json({ result });
+  });
+};
+
 export const getPotentialMatches = (req, res) => {
   const resultArray = [];
   const promises = [];
