@@ -20,6 +20,7 @@ router.get('/events/', EventController.getEvents);
 router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
 router.post('/events/rsvp/:id', EventController.rsvpEvent);
+router.post('/events/unrsvp/:id', EventController.unrsvpEvent);
 router.put('/users/survey/:id', UserController.addToSurvey);
 
 export default router;
