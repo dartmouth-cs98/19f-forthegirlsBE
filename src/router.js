@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as UserController from './controllers/user_controller';
 import * as MatchesController from './controllers/matches_controller';
 import * as EventController from './controllers/event_controller';
+import * as ChatController from './controllers/chat_controller';
 import { requireSignin } from './services/passport';
 
 const router = Router();
@@ -22,6 +23,7 @@ router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
 router.post('/events/rsvp/:id', EventController.rsvpEvent);
 router.post('/events/unrsvp/:id', EventController.unrsvpEvent);
+router.post('/chats/add', ChatController.addChat);
 router.put('/users/survey/:id', UserController.addToSurvey);
 
 export default router;
