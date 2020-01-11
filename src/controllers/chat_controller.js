@@ -34,6 +34,10 @@ export const getBetween = (req, res) => {
   const { firstID } = req.body;
   const { secondID } = req.body;
 
+  console.log(`first id: ${firstID}`);
+  console.log(`second id: ${secondID}`);
+
+
   Chat.find({ $or: [{ sender: firstID, receiver: secondID }, { sender: secondID, receiver: firstID }] })
     .limit(10)
     .sort('-timestamp')
