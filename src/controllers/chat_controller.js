@@ -26,11 +26,17 @@ export const addChat = (req, res) => {
 
 // From mongoose documentation
 // MyModel.find({ name: 'john', age: { $gte: 18 }});
+
+// Stackoverflow for pagination
+// .limit( 10 )
+// .sort( '-createdOn' )
 export const getBetween = (req, res) => {
   const { sendID } = req.body;
   const { receiveID } = req.body;
 
   Chat.find({ sender: sendID, receiver: receiveID })
+    .limit(10)
+    .sort('-timestamp')
     .then((result) => {
       res.json(result);
     })
