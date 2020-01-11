@@ -8,7 +8,7 @@ dotenv.config({ silent: true });
 export const addChat = (req, res) => {
   const { sender } = req.body;
   const { receiver } = req.body;
-  const { timestamp } = req.body;
+  const timestamp = Date.now();
   const { text } = req.body;
   const chat = new Chat();
   chat.sender = sender;
