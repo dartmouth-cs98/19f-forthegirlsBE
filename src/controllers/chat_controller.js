@@ -59,3 +59,20 @@ export const getToFrom = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+
+export const loadMore = (req, res) => {
+  const { firstID } = req.body;
+  const { secondID } = req.body;
+  const { loadNumber } = req.body;
+
+  Chat.find({ $or: [{ sender: firstID, receiver: secondID }, { sender: secondID, receiver: firstID }] })
+    .limit(loadNumber)
+    .sort('-timestamp')
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
