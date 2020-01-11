@@ -26,6 +26,7 @@ router.post('/events/unrsvp/:id', EventController.unrsvpEvent);
 router.post('/chats/add', ChatController.addChat);
 router.get('/chats/getBetween', ChatController.getBetween);
 router.get('/chats/getToFrom', ChatController.getToFrom);
+router.get('/chats/loadMore', ChatController.loadMore);
 router.put('/users/survey/:id', UserController.addToSurvey);
 
 export default router;
