@@ -118,3 +118,28 @@ export const getMatches = (req, res) => {
     });
   });
 };
+
+export const getMatchId = (req, res) => {
+  // let exists = false;
+  // const { user1 } = req.params.id1;
+  // const { user2 } = req.params.id2;
+  // const match = new Match();
+  // User.findById({ _id: req.params.id1 }).then((resp) => {
+  // User.findById({ _id: req.params.id2 }).then((resp2) => {
+  Match.find({ user1: req.params.id1, user2: req.params.id2 }).then((response) => {
+    if (response.length !== 0) {
+      // exists = true;
+      res.json(response[0].id);
+    } else {
+      Match.find({ user1: req.params.id2, user2: req.params.id1 }).then((response2) => {
+        if (response2.length !== 0) {
+          // exists = true;
+          res.json(response2[0].id);
+        }
+        // res.json('Match does not exist');
+      });
+    }
+  });
+  // });
+  // });
+};
