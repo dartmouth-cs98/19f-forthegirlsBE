@@ -31,6 +31,21 @@ export const addChat = (req, res) => {
 // .limit( 10 )
 // .sort( '-createdOn' )
 export const getBetween = (req, res) => {
+  const { firstID } = req.body;
+  const { secondID } = req.body;
+
+  Chat.find({ $or: [{ sender: firstID, receiver: secondID }, { sender: secondID, receiver: firstID }] })
+    .limit(10)
+    .sort('-timestamp')
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getToFrom = (req, res) => {
   const { sendID } = req.body;
   const { receiveID } = req.body;
 
