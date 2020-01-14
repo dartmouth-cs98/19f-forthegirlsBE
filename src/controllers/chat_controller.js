@@ -45,10 +45,7 @@ export const getBetween = (req, res) => {
 };
 
 export const getToFrom = (req, res) => {
-  const { sendID } = req.body;
-  const { receiveID } = req.body;
-
-  Chat.find({ sender: sendID, receiver: receiveID })
+  Chat.find({ sender: req.params.id1, receiver: req.params.id2 })
     .limit(10)
     .sort('-timestamp')
     .then((result) => {
@@ -61,12 +58,8 @@ export const getToFrom = (req, res) => {
 
 
 export const loadMore = (req, res) => {
-  const { firstID } = req.body;
-  const { secondID } = req.body;
-  const { loadNumber } = req.body;
-
-  Chat.find({ $or: [{ sender: firstID, receiver: secondID }, { sender: secondID, receiver: firstID }] })
-    .limit(loadNumber)
+  Chat.find({ $or: [{ sender: req.params.id1, receiver: req.params.id2 }, { sender: req.params.id2, receiver: req.params.id1 }] })
+    .limit(req.params.loadNumber)
     .sort('-timestamp')
     .then((result) => {
       res.json(result);
