@@ -82,3 +82,21 @@ export const getEvent = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+export const getRsvpCount = (req, res) => {
+  Event.findOne({ _id: req.params.id })
+    .then((result) => {
+      res.json(result.rsvps.length);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getYourRsvps = (req, res) => {
+
+};
+
+export const getConnectionRsvps = (req, res) => {
+
+};

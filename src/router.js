@@ -24,6 +24,7 @@ router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
 router.post('/events/rsvp/:id', EventController.rsvpEvent);
 router.post('/events/unrsvp/:id', EventController.unrsvpEvent);
+router.get('/events/rsvp/count/:id', EventController.getRsvpCount);
 router.post('/chats/add', ChatController.addChat);
 router.get('/chats/getBetween/:id1/:id2', ChatController.getBetween);
 router.get('/chats/getToFrom/:id1/:id2', ChatController.getToFrom);
