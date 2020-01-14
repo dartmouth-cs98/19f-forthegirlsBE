@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
+/* eslint-disable new-cap */
 import dotenv from 'dotenv';
 import Chat from '../models/chat_model';
 
@@ -8,16 +9,17 @@ dotenv.config({ silent: true });
 export const addChat = (req, res) => {
   const { sender } = req.body;
   const { receiver } = req.body;
-  const timestamp = Date.now();
   const { text } = req.body;
+  const timestamp = Date.now();
+
   const chat = new Chat();
   chat.sender = sender;
   chat.receiver = receiver;
   chat.timestamp = timestamp;
   chat.text = text;
   chat.save()
-    .then((resp) => {
-      res.json(resp);
+    .then((resp3) => {
+      res.json(resp3);
     })
     .catch((error) => {
       console.log(error);
@@ -31,14 +33,7 @@ export const addChat = (req, res) => {
 // .limit( 10 )
 // .sort( '-createdOn' )
 export const getBetween = (req, res) => {
-  const { firstID } = req.body;
-  const { secondID } = req.body;
-
-  console.log(`first id: ${firstID}`);
-  console.log(`second id: ${secondID}`);
-
-
-  Chat.find({ $or: [{ sender: firstID, receiver: secondID }, { sender: secondID, receiver: firstID }] })
+  Chat.find({ $or: [{ sender: req.params.id2, receiver: req.params.id1 }, { sender: req.params.id1, receiver: req.params.id2 }] })
     .limit(10)
     .sort('-timestamp')
     .then((result) => {
