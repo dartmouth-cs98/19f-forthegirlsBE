@@ -19,6 +19,7 @@ const UserSchema = new Schema({
   gradYear: String,
   currentJob: String,
   hometown: String,
+  location: String,
 
   // CS:
   frontEnd: Boolean,
