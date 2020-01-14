@@ -35,7 +35,7 @@ export const addChat = (req, res) => {
 export const getBetween = (req, res) => {
   Chat.find({ $or: [{ sender: req.params.id2, receiver: req.params.id1 }, { sender: req.params.id1, receiver: req.params.id2 }] })
     .limit(10)
-    .sort('-timestamp')
+    .sort('timestamp')
     .then((result) => {
       res.json(result);
     })
@@ -47,7 +47,7 @@ export const getBetween = (req, res) => {
 export const getToFrom = (req, res) => {
   Chat.find({ sender: req.params.id1, receiver: req.params.id2 })
     .limit(10)
-    .sort('-timestamp')
+    .sort('timestamp')
     .then((result) => {
       res.json(result);
     })
@@ -60,7 +60,7 @@ export const getToFrom = (req, res) => {
 export const loadMore = (req, res) => {
   Chat.find({ $or: [{ sender: req.params.id1, receiver: req.params.id2 }, { sender: req.params.id2, receiver: req.params.id1 }] })
     .limit(req.params.loadNumber)
-    .sort('-timestamp')
+    .sort('timestamp')
     .then((result) => {
       res.json(result);
     })
