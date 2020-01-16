@@ -4,6 +4,7 @@
 import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
+import Match from '../models/matches_model';
 
 dotenv.config({ silent: true });
 
@@ -40,6 +41,36 @@ export const signup = (req, res, next) => {
           user.password = password;
           user.save()
             .then((resp) => {
+              // add matches for all other users with matched boolean false
+              User.findOne({ username }).then((currUser) => {
+                User.find().then((response) => {
+                  for (let i = 0; i < response.length; i += 1) {
+                    if (currUser.id !== response[i].id) {
+                      const match = new Match();
+                      match.user1 = currUser.id;
+                      match.user2 = response[i].id;
+                      match.matched = false;
+                      match.save();
+                      // promises.push(
+                      //   new Promise(((resolve, reject) => {
+                      //     Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
+                      //       if (matchRes1.length === 0) {
+                      //         Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
+                      //           if (matchRes2.length === 0) {
+                      //             resultArray.push(response[i].id);
+                      //           }
+                      //           resolve(resultArray);
+                      //         });
+                      //       } else {
+                      //         resolve(resultArray);
+                      //       }
+                      //     });
+                      //   })),
+                      // );
+                    }
+                  }
+                });
+              });
               res.send({ token: tokenForUser(user), username: req.body.username, id: user.id });
             })
             .catch((error) => {
