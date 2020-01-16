@@ -11,6 +11,7 @@ export const addMatch = (req, res) => {
   let exists = false;
   const { user1 } = req.body;
   const { user2 } = req.body;
+  const { matched } = req.body;
   const match = new Match();
   User.findOne({ username: user1 }).then((resp) => {
     User.findOne({ username: user2 }).then((resp2) => {
@@ -25,6 +26,7 @@ export const addMatch = (req, res) => {
           if (exists === false) {
             match.user1 = resp.id;
             match.user2 = resp2.id;
+            match.matched = matched;
             match.save()
               .then((saveResp) => {
                 res.json(saveResp);
