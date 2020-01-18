@@ -2,6 +2,7 @@
 /* eslint-disable consistent-return */
 import dotenv from 'dotenv';
 import Event from '../models/event_model';
+import Match from '../models/matches_model';
 
 dotenv.config({ silent: true });
 
@@ -104,5 +105,32 @@ export const getYourRsvps = (req, res) => {
 };
 
 export const getConnectionRsvps = (req, res) => {
-
+  const connectionsAttending = [];
+  Event.findOne({ _id: req.params.eventId })
+    .then((eventResponse) => {
+      const eventRsvps = eventResponse.rsvps;
+      Match.find({ $or: [{ user1: req.params.userId }, { user2: req.params.userId }] })
+        .then((matchResponses) => {
+          if (matchResponses.length !== 0) {
+            for (let i = matchResponses.length - 1; i >= 0; i -= 1) {
+              if (matchResponses[i].user1.toString() === req.params.userId.toString()) {
+                const connection = matchResponses[i].user2;
+                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                  if (eventRsvps[j].toString() === connection.toString()) {
+                    connectionsAttending.push(connection);
+                  }
+                }
+              } else {
+                const connection = matchResponses[i].user1;
+                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                  if (eventRsvps[j].toString() === connection.toString()) {
+                    connectionsAttending.push(connection);
+                  }
+                }
+              }
+            }
+          }
+          res.json(connectionsAttending);
+        });
+    });
 };
