@@ -94,7 +94,13 @@ export const getRsvpCount = (req, res) => {
 };
 
 export const getYourRsvps = (req, res) => {
-
+  Event.find({ rsvps: { $in: [req.params.id] } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
 };
 
 export const getConnectionRsvps = (req, res) => {
