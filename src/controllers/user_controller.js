@@ -85,9 +85,11 @@ export const editUser = (req, res) => {
   const { username } = req.params.id;
   const newName = req.body.username;
   const newPW = req.body.password;
+  const { profileURL } = req.body;
   User.findOneAndUpdate({ username }).then((result) => {
     result.username = newName;
     result.password = newPW;
+    result.profileURL = profileURL;
     res.json({ result });
     result.save();
   });
