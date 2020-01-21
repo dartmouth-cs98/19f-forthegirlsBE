@@ -14,6 +14,7 @@ const UserSchema = new Schema({
   // Basic
   firstName: String,
   lastName: String,
+  photoURL: String,
   highSchool: String,
   collegeName: String,
   gradYear: String,

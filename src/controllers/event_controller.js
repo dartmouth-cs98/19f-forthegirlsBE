@@ -12,12 +12,16 @@ export const addEvent = (req, res) => {
   const { time } = req.body;
   const { location } = req.body;
   const { description } = req.body;
+  const { longitude } = req.body;
+  const { latitude } = req.body;
   const event = new Event();
   event.title = title;
   event.date = date;
   event.time = time;
   event.location = location;
   event.description = description;
+  event.latitude = latitude;
+  event.longitude = longitude;
   event.save()
     .then((resp) => {
       res.json(resp);
