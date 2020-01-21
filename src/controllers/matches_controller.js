@@ -77,9 +77,16 @@ export const getPotentialMatches = (req, res) => {
                   Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                     if (matchRes2.length === 0) {
                       resultArray.push(response[i].id);
+                    } else if (matchRes2[0].matched === true) {
+                      resultArray.push(response[i].id);
+                      resolve(resultArray);
+                    } else {
+                      resolve(resultArray);
                     }
-                    resolve(resultArray);
                   });
+                } else if (matchRes1[0].matched === false) {
+                  resultArray.push(response[i].id);
+                  resolve(resultArray);
                 } else {
                   resolve(resultArray);
                 }
