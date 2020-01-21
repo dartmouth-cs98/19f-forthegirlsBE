@@ -100,13 +100,17 @@ export const getMatches = (req, res) => {
                   Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                     if (matchRes2.length === 0) {
                       resolve(resultArray);
-                    } else {
+                    } else if (matchRes2[0].matched === true) {
                       resultArray.push(response[i].id);
+                      resolve(resultArray);
+                    } else {
                       resolve(resultArray);
                     }
                   });
-                } else {
+                } else if (matchRes1[0].matched === true) {
                   resultArray.push(response[i].id);
+                  resolve(resultArray);
+                } else {
                   resolve(resultArray);
                 }
               });
