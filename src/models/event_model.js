@@ -8,6 +8,8 @@ const EventSchema = new Schema({
   time: { type: String },
   location: { type: String },
   description: { type: String },
+  longitude: Number,
+  latitude: Number,
 });
 EventSchema.set('toJSON', {
   virtuals: true,

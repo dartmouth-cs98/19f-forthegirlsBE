@@ -2,6 +2,7 @@
 /* eslint-disable consistent-return */
 import dotenv from 'dotenv';
 import Event from '../models/event_model';
+import Match from '../models/matches_model';
 
 dotenv.config({ silent: true });
 
@@ -11,12 +12,16 @@ export const addEvent = (req, res) => {
   const { time } = req.body;
   const { location } = req.body;
   const { description } = req.body;
+  const { longitude } = req.body;
+  const { latitude } = req.body;
   const event = new Event();
   event.title = title;
   event.date = date;
   event.time = time;
   event.location = location;
   event.description = description;
+  event.latitude = latitude;
+  event.longitude = longitude;
   event.save()
     .then((resp) => {
       res.json(resp);
@@ -80,5 +85,56 @@ export const getEvent = (req, res) => {
     })
     .catch((error) => {
       res.status(500).json({ error });
+    });
+};
+
+export const getRsvpCount = (req, res) => {
+  Event.findOne({ _id: req.params.id })
+    .then((result) => {
+      res.json(result.rsvps.length);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getYourRsvps = (req, res) => {
+  Event.find({ rsvps: { $in: [req.params.id] } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const getConnectionRsvps = (req, res) => {
+  const connectionsAttending = [];
+  Event.findOne({ _id: req.params.eventId })
+    .then((eventResponse) => {
+      const eventRsvps = eventResponse.rsvps;
+      Match.find({ $or: [{ user1: req.params.userId }, { user2: req.params.userId }] })
+        .then((matchResponses) => {
+          if (matchResponses.length !== 0) {
+            for (let i = matchResponses.length - 1; i >= 0; i -= 1) {
+              if (matchResponses[i].user1.toString() === req.params.userId.toString()) {
+                const connection = matchResponses[i].user2;
+                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                  if (eventRsvps[j].toString() === connection.toString()) {
+                    connectionsAttending.push(connection);
+                  }
+                }
+              } else {
+                const connection = matchResponses[i].user1;
+                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                  if (eventRsvps[j].toString() === connection.toString()) {
+                    connectionsAttending.push(connection);
+                  }
+                }
+              }
+            }
+          }
+          res.json(connectionsAttending);
+        });
     });
 };
