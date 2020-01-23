@@ -111,6 +111,7 @@ function tokenForUser(user) {
 }
 
 export const addToSurvey = (req, res) => {
+  console.log('Did this');
   const username = req.params.id;
   User.findOne({ username }).then((result) => {
     const fields = Object.keys(req.body);

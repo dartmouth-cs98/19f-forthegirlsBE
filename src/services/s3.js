@@ -1,6 +1,7 @@
 import aws from 'aws-sdk';
 
 const signS3 = (req, res) => {
+  console.log('Here');
   const s3 = new aws.S3({ signatureVersion: 'v4', region: 'us-east-2' });
   const fileName = req.query['file-name'];
   const fileType = req.query['file-type'];
