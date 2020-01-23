@@ -4,6 +4,7 @@ import * as MatchesController from './controllers/matches_controller';
 import * as EventController from './controllers/event_controller';
 import * as ChatController from './controllers/chat_controller';
 import { requireSignin } from './services/passport';
+import signS3 from './services/s3';
 
 const router = Router();
 
@@ -32,5 +33,6 @@ router.get('/chats/getBetween/:id1/:id2', ChatController.getBetween);
 router.get('/chats/getToFrom/:id1/:id2', ChatController.getToFrom);
 router.get('/chats/loadMore/:id1/:id2/:loadNum', ChatController.loadMore);
 router.put('/users/survey/:id', UserController.addToSurvey);
+router.get('/sign-s3', signS3);
 
 export default router;
