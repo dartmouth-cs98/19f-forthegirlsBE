@@ -63,6 +63,8 @@ const UserSchema = new Schema({
   promptThreeAnswer: String,
   introextro: Number,
   listenFollow: Number,
+
+  profileURL: String,
 });
 UserSchema.set('toJSON', {
   virtuals: true,
