@@ -3,6 +3,7 @@
 import dotenv from 'dotenv';
 import Event from '../models/event_model';
 import Match from '../models/matches_model';
+import User from '../models/user_model';
 
 dotenv.config({ silent: true });
 
@@ -110,6 +111,8 @@ export const getYourRsvps = (req, res) => {
 
 export const getConnectionRsvps = (req, res) => {
   const connectionsAttending = [];
+  const promises = [];
+
   Event.findOne({ _id: req.params.eventId })
     .then((eventResponse) => {
       const eventRsvps = eventResponse.rsvps;
@@ -121,20 +124,36 @@ export const getConnectionRsvps = (req, res) => {
                 const connection = matchResponses[i].user2;
                 for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
                   if (eventRsvps[j].toString() === connection.toString()) {
-                    connectionsAttending.push(connection);
+                    promises.push(
+                      new Promise(((resolve, reject) => {
+                        User.findById({ _id: connection }).then((result) => {
+                          connectionsAttending.push(result.username);
+                          resolve(connectionsAttending);
+                        });
+                      })),
+                    );
                   }
                 }
               } else {
                 const connection = matchResponses[i].user1;
                 for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
                   if (eventRsvps[j].toString() === connection.toString()) {
-                    connectionsAttending.push(connection);
+                    promises.push(
+                      new Promise(((resolve, reject) => {
+                        User.findById({ _id: connection }).then((result) => {
+                          connectionsAttending.push(result.username);
+                          resolve(connectionsAttending);
+                        });
+                      })),
+                    );
                   }
                 }
               }
             }
           }
-          res.json(connectionsAttending);
+          Promise.all(promises).then(() => {
+            res.json(connectionsAttending);
+          });
         });
     });
 };
