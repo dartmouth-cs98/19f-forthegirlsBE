@@ -49,24 +49,10 @@ export const signup = (req, res, next) => {
                       const match = new Match();
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
+                      // TO DO: Calculate score for this user
+                      match.score = 0;
                       match.matched = false;
                       match.save();
-                      // promises.push(
-                      //   new Promise(((resolve, reject) => {
-                      //     Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
-                      //       if (matchRes1.length === 0) {
-                      //         Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
-                      //           if (matchRes2.length === 0) {
-                      //             resultArray.push(response[i].id);
-                      //           }
-                      //           resolve(resultArray);
-                      //         });
-                      //       } else {
-                      //         resolve(resultArray);
-                      //       }
-                      //     });
-                      //   })),
-                      // );
                     }
                   }
                 });
