@@ -4,8 +4,11 @@ import dotenv from 'dotenv';
 import Event from '../models/event_model';
 import Match from '../models/matches_model';
 import User from '../models/user_model';
+import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
+
+const awardRSVPS = 3;
 
 export const addEvent = (req, res) => {
   const { title } = req.body;
@@ -41,9 +44,21 @@ export const addEvent = (req, res) => {
 
 export const rsvpEvent = (req, res) => {
   const { userID } = req.body;
-
   Event.findById({ _id: req.params.id }).then((result) => {
     result.rsvps.push(userID);
+
+    Event.find({ rsvps: { $in: [userID] } })
+      .then((result2) => {
+        if (result2.length >= awardRSVPS) {
+          Award.findOne({ userID }).then((result3) => {
+            if (result3.rsvpThree === false) {
+              result3.rsvpThree = true;
+              result3.save();
+            }
+          });
+        }
+      });
+
     res.json(result.rsvps);
     result.save();
   }).catch((error) => {
