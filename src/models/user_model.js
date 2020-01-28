@@ -24,7 +24,7 @@ const UserSchema = new Schema({
 
   // CS:
   score_frontEnd: Boolean,
-  score_backEend: Boolean,
+  score_backEnd: Boolean,
   score_small: Boolean,
   score_medium: Boolean,
   score_large: Boolean,
@@ -68,10 +68,10 @@ const UserSchema = new Schema({
 });
 
 // returns keuys to compute score on
-UserScheme.virtuals += (score_keys) => {
-  returns['web', 'mobile'];
-  // or some other logic for returning the important keys
-};
+// UserScheme.virtuals += (score_keys) => {
+//   returns['web', 'mobile'];
+//   // or some other logic for returning the important keys
+// };
 
 UserSchema.set('toJSON', {
   virtuals: true,
