@@ -67,11 +67,11 @@ const UserSchema = new Schema({
   profileURL: String,
 });
 
-// returns keuys to compute score on
-UserScheme.virtuals += (score_keys) => {
-  returns['web', 'mobile'];
-  // or some other logic for returning the important keys
-};
+// // returns keuys to compute score on
+// UserScheme.virtuals += (score_keys) => {
+//   returns['web', 'mobile'];
+//   // or some other logic for returning the important keys
+// };
 
 UserSchema.set('toJSON', {
   virtuals: true,
