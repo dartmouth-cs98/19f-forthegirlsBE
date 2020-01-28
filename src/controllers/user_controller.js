@@ -50,6 +50,13 @@ export const signup = (req, res, next) => {
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
                       // TO DO: Calculate score for this user
+                      // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
+                      //   if (currUser[key] == respond[i][key]) //add to score
+                      // })
+                      // alternative
+                      // response.score_keys.forEach/
+
+
                       match.score = 0;
                       match.matched = false;
                       match.save();

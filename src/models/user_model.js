@@ -23,26 +23,26 @@ const UserSchema = new Schema({
   location: String,
 
   // CS:
-  frontEnd: Boolean,
-  backEend: Boolean,
-  small: Boolean,
-  medium: Boolean,
-  large: Boolean,
-  meritocratic: Boolean,
-  nurturing: Boolean,
-  fratty: Boolean,
-  fast: Boolean,
-  organized: Boolean,
-  stable: Boolean,
-  formal: Boolean,
-  relaxed: Boolean,
-  web: Boolean,
-  user: Boolean,
-  design: Boolean,
-  mobile: Boolean,
-  security: Boolean,
-  algorithms: Boolean,
-  storage: Boolean,
+  score_frontEnd: Boolean,
+  score_backEend: Boolean,
+  score_small: Boolean,
+  score_medium: Boolean,
+  score_large: Boolean,
+  score_meritocratic: Boolean,
+  score_nurturing: Boolean,
+  score_fratty: Boolean,
+  score_fast: Boolean,
+  score_organized: Boolean,
+  score_stable: Boolean,
+  score_formal: Boolean,
+  score_relaxed: Boolean,
+  score_web: Boolean,
+  score_user: Boolean,
+  score_design: Boolean,
+  score_mobile: Boolean,
+  score_security: Boolean,
+  score_algorithms: Boolean,
+  score_storage: Boolean,
 
   // Demographic
   age: Number,
@@ -66,6 +66,13 @@ const UserSchema = new Schema({
 
   profileURL: String,
 });
+
+// returns keuys to compute score on
+UserScheme.virtuals += (score_keys) => {
+  returns['web', 'mobile'];
+  // or some other logic for returning the important keys
+};
+
 UserSchema.set('toJSON', {
   virtuals: true,
 });
