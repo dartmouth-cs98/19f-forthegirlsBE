@@ -5,12 +5,20 @@ import jwt from 'jwt-simple';
 import dotenv from 'dotenv';
 import User from '../models/user_model';
 import Match from '../models/matches_model';
+import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
   const { username } = req.body;
   User.findOne({ username }).then((result) => {
+    Award.findOne({ userID: result.id })
+      .then((result2) => {})
+      .catch(() => {
+        const award = new Award();
+        award.userID = result.id;
+        award.save();
+      });
     res.send({ token: tokenForUser(req.user), username: req.user.username, id: result.id });
   }).catch((error) => {
     res.status(500).json({ error });
@@ -43,6 +51,9 @@ export const signup = (req, res, next) => {
             .then((resp) => {
               // add matches for all other users with matched boolean false
               User.findOne({ username }).then((currUser) => {
+                const award = new Award();
+                award.userID = currUser.id;
+                award.save();
                 User.find().then((response) => {
                   for (let i = 0; i < response.length; i += 1) {
                     if (currUser.id !== response[i].id) {
