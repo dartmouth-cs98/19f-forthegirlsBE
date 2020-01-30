@@ -149,27 +149,24 @@ export const addToSurvey = (req, res) => {
                   // resolve(resultArray);
                 } else {
                   // RECALCULATE SCORE FOR MATCH RES 2
-                  console.log('HEREE');
+                  // console.log('HEREE');
                   Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
-                    console.log(key);
-                    if (result[key] === others[i][key]) {
+                    // console.log(key);
+                    if (result[key] === others[i][key] && result[key]) {
                       matchRes2[0].score++;
                       // match.save();
                     } // add to score
                   });
                   matchRes2[0].save();
-
-                  // resultArray.push(response[i].id);
-                  // resolve(resultArray);
                 }
               });
             } else {
-              console.log('HEREEEE');
+              // console.log('HEREEEE');
               Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
                 // console.log(key);
                 if (result[key] === others[i][key] && result[key]) {
-                  console.log(key);
-                  console.log(result[key]);
+                  // console.log(key);
+                  // console.log(result[key]);
                   matchRes1[0].score++;
                   // match.save();
                 } // add to score
@@ -178,22 +175,6 @@ export const addToSurvey = (req, res) => {
               // RECALCULATE SCORE FOR MATCH RES 1
             }
           });
-          // TO DO: Calculate score for this user
-          // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
-          //   if (currUser[key] == respond[i][key]) //add to score
-          // })
-          // alternative
-          // response.score_keys.forEach/
-
-
-          // console.log(Object.keys(response[i].schema.tree));
-          // match.score = 0;
-
-
-          // alternative
-          // response.score_keys.forEach/
-          // match.matched = false;
-          // match.save();
         }
       }
     });
