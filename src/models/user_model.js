@@ -24,7 +24,7 @@ const UserSchema = new Schema({
 
   // CS:
   score_frontEnd: Boolean,
-  score_backEend: Boolean,
+  score_backEnd: Boolean,
   score_small: Boolean,
   score_medium: Boolean,
   score_large: Boolean,
