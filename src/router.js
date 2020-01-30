@@ -3,6 +3,7 @@ import * as UserController from './controllers/user_controller';
 import * as MatchesController from './controllers/matches_controller';
 import * as EventController from './controllers/event_controller';
 import * as ChatController from './controllers/chat_controller';
+import * as AwardController from './controllers/award_controller';
 import { requireSignin } from './services/passport';
 import signS3 from './services/s3';
 
@@ -32,6 +33,7 @@ router.post('/chats/add', ChatController.addChat);
 router.get('/chats/getBetween/:id1/:id2', ChatController.getBetween);
 router.get('/chats/getToFrom/:id1/:id2', ChatController.getToFrom);
 router.get('/chats/loadMore/:id1/:id2/:loadNum', ChatController.loadMore);
+router.get('/awards/checkAward/:id/:awardTitle', AwardController.checkAward);
 router.put('/users/survey/:id', UserController.addToSurvey);
 router.get('/sign-s3', signS3);
 
