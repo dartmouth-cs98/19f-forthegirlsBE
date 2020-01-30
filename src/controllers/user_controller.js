@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
@@ -61,7 +62,6 @@ export const signup = (req, res, next) => {
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
                       // TO DO: Calculate score for this user
-<<<<<<< Updated upstream
                       // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
                       //   if (currUser[key] == respond[i][key]) //add to score
                       // })
@@ -69,22 +69,21 @@ export const signup = (req, res, next) => {
                       // response.score_keys.forEach/
 
 
-=======
->>>>>>> Stashed changes
-                      console.log(Object.keys(response[i].schema.tree));
+                      // console.log(Object.keys(response[i].schema.tree));
+                      match.score = 0;
 
 
-                      // response[i].keys().filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
-                      //   console.log(key);
-                      //   // if (currUser[key] === response[i][key]) {
-                      //   //   match.score++;
-                      //   // } // add to score
-                      // });
+                      Object.keys(response[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                        console.log(key);
+                        if (currUser[key] === response[i][key]) {
+                          match.score++;
+                          // match.save();
+                        } // add to score
+                      });
 
 
                       // alternative
                       // response.score_keys.forEach/
-                      match.score = 0;
                       match.matched = false;
                       match.save();
                     }
@@ -139,6 +138,65 @@ export const addToSurvey = (req, res) => {
       console.log(fields[i]);
       result[fields[i]] = req.body[fields[i]];
     }
+    // recalculate score
+    User.find().then((others) => {
+      for (let i = 0; i < others.length; i += 1) {
+        if (result.id !== others[i].id) {
+          Match.find({ user1: result.id, user2: others[i].id }).then((matchRes1) => {
+            if (matchRes1.length === 0) {
+              Match.find({ user1: others[i].id, user2: result.id }).then((matchRes2) => {
+                if (matchRes2.length === 0) {
+                  // resolve(resultArray);
+                } else {
+                  // RECALCULATE SCORE FOR MATCH RES 2
+                  console.log('HEREE');
+                  Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                    console.log(key);
+                    if (result[key] === others[i][key]) {
+                      matchRes2[0].score++;
+                      // match.save();
+                    } // add to score
+                  });
+                  matchRes2[0].save();
+
+                  // resultArray.push(response[i].id);
+                  // resolve(resultArray);
+                }
+              });
+            } else {
+              console.log('HEREEEE');
+              Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                // console.log(key);
+                if (result[key] === others[i][key] && result[key]) {
+                  console.log(key);
+                  console.log(result[key]);
+                  matchRes1[0].score++;
+                  // match.save();
+                } // add to score
+              });
+              matchRes1[0].save();
+              // RECALCULATE SCORE FOR MATCH RES 1
+            }
+          });
+          // TO DO: Calculate score for this user
+          // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
+          //   if (currUser[key] == respond[i][key]) //add to score
+          // })
+          // alternative
+          // response.score_keys.forEach/
+
+
+          // console.log(Object.keys(response[i].schema.tree));
+          // match.score = 0;
+
+
+          // alternative
+          // response.score_keys.forEach/
+          // match.matched = false;
+          // match.save();
+        }
+      }
+    });
     result.save();
     console.log(fields);
     res.json({ result });
