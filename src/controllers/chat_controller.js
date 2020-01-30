@@ -3,8 +3,11 @@
 /* eslint-disable new-cap */
 import dotenv from 'dotenv';
 import Chat from '../models/chat_model';
+import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
+
+const contactAwardNum = 2;
 
 export const addChat = (req, res) => {
   const { sender } = req.body;
@@ -18,8 +21,31 @@ export const addChat = (req, res) => {
   chat.timestamp = timestamp;
   chat.text = text;
   chat.save()
-    .then((resp3) => {
-      res.json(resp3);
+    // .then((response) => {
+    //   res.json(response);
+    // })
+    .then((saveResponse) => {
+      Chat.find({ sender }).then((result) => {
+        let contactsMade = 0;
+        const contactsSeen = new Set();
+        for (let i = 0; i < result.length; i += 1) {
+          const currContact = result[i].receiver;
+          if (contactsSeen.has(currContact.toString()) === false) {
+            contactsMade += 1;
+            contactsSeen.add(currContact.toString());
+          }
+          if (contactsMade === contactAwardNum) {
+            break;
+          }
+        }
+        if (contactsMade === contactAwardNum) {
+          Award.findOne({ userID: sender }).then((result3) => {
+            result3.messageThree = true;
+            result3.save();
+          });
+        }
+      });
+      res.json(saveResponse);
     })
     .catch((error) => {
       console.log(error);
