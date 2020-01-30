@@ -142,7 +142,7 @@ export const getConnectionRsvps = (req, res) => {
                     promises.push(
                       new Promise(((resolve, reject) => {
                         User.findById({ _id: connection }).then((result) => {
-                          connectionsAttending.push(result.username);
+                          connectionsAttending.push(result);
                           resolve(connectionsAttending);
                         });
                       })),
@@ -156,7 +156,7 @@ export const getConnectionRsvps = (req, res) => {
                     promises.push(
                       new Promise(((resolve, reject) => {
                         User.findById({ _id: connection }).then((result) => {
-                          connectionsAttending.push(result.username);
+                          connectionsAttending.push(result);
                           resolve(connectionsAttending);
                         });
                       })),
