@@ -68,6 +68,19 @@ export const signup = (req, res, next) => {
                       // response.score_keys.forEach/
 
 
+                      console.log(Object.keys(response[i].schema.tree));
+
+
+                      // response[i].keys().filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                      //   console.log(key);
+                      //   // if (currUser[key] === response[i][key]) {
+                      //   //   match.score++;
+                      //   // } // add to score
+                      // });
+
+
+                      // alternative
+                      // response.score_keys.forEach/
                       match.score = 0;
                       match.matched = false;
                       match.save();
