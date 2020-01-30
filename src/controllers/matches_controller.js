@@ -4,6 +4,7 @@
 import dotenv from 'dotenv';
 import Match from '../models/matches_model';
 import User from '../models/user_model';
+import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
 
@@ -22,6 +23,18 @@ export const addMatch = (req, res) => {
           if (response2.length !== 0) {
             response2[0].matched = true;
             res.json('match added');
+          }
+        });
+        Award.findOne({ userID: resp.id }).then((awardResult) => {
+          if (awardResult.firstMatch === false) {
+            awardResult.firstMatch = true;
+            awardResult.save();
+          }
+        });
+        Award.findOne({ userID: resp2.id }).then((awardResult) => {
+          if (awardResult.firstMatch === false) {
+            awardResult.firstMatch = true;
+            awardResult.save();
           }
         });
       });
