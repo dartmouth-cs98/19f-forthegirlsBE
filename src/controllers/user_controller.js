@@ -61,6 +61,7 @@ export const signup = (req, res, next) => {
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
                       // TO DO: Calculate score for this user
+<<<<<<< Updated upstream
                       // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
                       //   if (currUser[key] == respond[i][key]) //add to score
                       // })
@@ -68,6 +69,8 @@ export const signup = (req, res, next) => {
                       // response.score_keys.forEach/
 
 
+=======
+>>>>>>> Stashed changes
                       console.log(Object.keys(response[i].schema.tree));
 
 
