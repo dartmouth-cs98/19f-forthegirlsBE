@@ -60,15 +60,21 @@ export const signup = (req, res, next) => {
                       const match = new Match();
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
-                      // TO DO: Calculate score for this user
-                      // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
-                      //   if (currUser[key] == respond[i][key]) //add to score
-                      // })
+
+                      // console.log(Object.keys(response[i].schema.tree));
+                      match.score = 0;
+
+                      Object.keys(response[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                        // console.log(key);
+                        if (currUser[key] === response[i][key]) {
+                          match.score++;
+                          // match.save();
+                        } // add to score
+                      });
+
+
                       // alternative
                       // response.score_keys.forEach/
-
-
-                      match.score = 0;
                       match.matched = false;
                       match.save();
                     }
