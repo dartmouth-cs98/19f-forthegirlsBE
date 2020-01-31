@@ -82,9 +82,9 @@ export const getPotentialMatches = (req, res) => {
         }
       }
       Promise.all(promises).then(() => {
-        // resultArray.sort((item) => {
-        //   return item.score;
-        // });
+        resultArray.sort((item) => {
+          return item.score;
+        });
         res.send(resultArray);
       });
     });

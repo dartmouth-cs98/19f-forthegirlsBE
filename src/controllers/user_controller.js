@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
@@ -68,7 +69,21 @@ export const signup = (req, res, next) => {
                       // response.score_keys.forEach/
 
 
+                      // console.log(Object.keys(response[i].schema.tree));
                       match.score = 0;
+
+
+                      Object.keys(response[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                        console.log(key);
+                        if (currUser[key] === response[i][key]) {
+                          match.score++;
+                          // match.save();
+                        } // add to score
+                      });
+
+
+                      // alternative
+                      // response.score_keys.forEach/
                       match.matched = false;
                       match.save();
                     }
@@ -123,6 +138,53 @@ export const addToSurvey = (req, res) => {
       console.log(fields[i]);
       result[fields[i]] = req.body[fields[i]];
     }
+    // recalculate score
+    User.find().then((others) => {
+      for (let i = 0; i < others.length; i += 1) {
+        if (result.id !== others[i].id) {
+          Match.find({ user1: result.id, user2: others[i].id }).then((matchRes1) => {
+            if (matchRes1.length === 0) {
+              Match.find({ user1: others[i].id, user2: result.id }).then((matchRes2) => {
+                if (matchRes2.length === 0) {
+                  // resolve(resultArray);
+                } else {
+                  // RECALCULATE SCORE FOR MATCH RES 2
+                  // console.log('HEREE match res 2');
+                  Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                    // console.log(key);
+                    // console.log(result[key]);
+                    // console.log(others[i][key]);
+                    // console.log(result[key] === others[i][key]);
+                    // console.log(result[key] !== undefined);
+                    if (result[key] === others[i][key] && result[key] !== undefined) {
+                      // console.log('SAME VALUE FOUND');
+                      matchRes2[0].score++;
+                      // match.save();
+                    } // add to score
+                  });
+                  matchRes2[0].save();
+                }
+              });
+            } else {
+              // console.log('HEREEEE match res 1');
+              Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
+                // console.log(key);
+                if (result[key] === others[i][key] && result[key] !== undefined) {
+                  // console.log('SAME VALUE FOUND');
+
+                  // console.log(key);
+                  // console.log(result[key]);
+                  matchRes1[0].score++;
+                  // match.save();
+                } // add to score
+              });
+              matchRes1[0].save();
+              // RECALCULATE SCORE FOR MATCH RES 1
+            }
+          });
+        }
+      }
+    });
     result.save();
     console.log(fields);
     res.json({ result });
