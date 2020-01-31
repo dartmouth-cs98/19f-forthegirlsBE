@@ -63,7 +63,7 @@ export const getPotentialMatches = (req, res) => {
                   Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                     if (matchRes2.length === 0) {
                       resultArray.push(response[i].id);
-                    } else if (matchRes2[0].matched === true) {
+                    } else if (matchRes2[0].matched === false) {
                       resultArray.push(response[i].id);
                       resolve(resultArray);
                     } else {
@@ -82,6 +82,9 @@ export const getPotentialMatches = (req, res) => {
         }
       }
       Promise.all(promises).then(() => {
+        // resultArray.sort((item) => {
+        //   return item.score;
+        // });
         res.send(resultArray);
       });
     });
