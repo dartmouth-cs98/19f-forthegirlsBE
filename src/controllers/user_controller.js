@@ -61,15 +61,6 @@ export const signup = (req, res, next) => {
                       const match = new Match();
                       match.user1 = currUser.id;
                       match.user2 = response[i].id;
-                      // TO DO: Calculate score for this user
-                      // response.keys().filter(k => {k.match(/^score.*/)}).forEach(key =>{
-                      //   if (currUser[key] == respond[i][key]) //add to score
-                      // })
-                      // alternative
-                      // response.score_keys.forEach/
-
-
-                      // console.log(Object.keys(response[i].schema.tree));
                       match.score = 0;
 
 
@@ -77,13 +68,11 @@ export const signup = (req, res, next) => {
                         console.log(key);
                         if (currUser[key] === response[i][key]) {
                           match.score++;
-                          // match.save();
-                        } // add to score
+                        }
                       });
-
-
-                      // alternative
-                      // response.score_keys.forEach/
+                      if (currUser.collegeName === response[i].collegeName) {
+                        match.score += 2;
+                      }
                       match.matched = false;
                       match.save();
                     }
@@ -148,38 +137,27 @@ export const addToSurvey = (req, res) => {
                 if (matchRes2.length === 0) {
                   // resolve(resultArray);
                 } else {
-                  // RECALCULATE SCORE FOR MATCH RES 2
-                  // console.log('HEREE match res 2');
                   Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
-                    // console.log(key);
-                    // console.log(result[key]);
-                    // console.log(others[i][key]);
-                    // console.log(result[key] === others[i][key]);
-                    // console.log(result[key] !== undefined);
                     if (result[key] === others[i][key] && result[key] !== undefined) {
-                      // console.log('SAME VALUE FOUND');
                       matchRes2[0].score++;
-                      // match.save();
-                    } // add to score
+                    }
                   });
+                  if (result.collegeName === others[i].collegeName) {
+                    matchRes2[0].score += 2;
+                  }
                   matchRes2[0].save();
                 }
               });
             } else {
-              // console.log('HEREEEE match res 1');
               Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
-                // console.log(key);
                 if (result[key] === others[i][key] && result[key] !== undefined) {
-                  // console.log('SAME VALUE FOUND');
-
-                  // console.log(key);
-                  // console.log(result[key]);
                   matchRes1[0].score++;
-                  // match.save();
-                } // add to score
+                }
               });
+              if (result.collegeName === others[i].collegeName) {
+                matchRes1[0].score += 2;
+              }
               matchRes1[0].save();
-              // RECALCULATE SCORE FOR MATCH RES 1
             }
           });
         }
