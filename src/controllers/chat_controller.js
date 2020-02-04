@@ -7,7 +7,8 @@ import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
 
-const contactAwardNum = 2;
+const contactAwardNum = 5;
+const sendingGoal = 100;
 
 export const addChat = (req, res) => {
   const { sender } = req.body;
@@ -26,6 +27,7 @@ export const addChat = (req, res) => {
     // })
     .then((saveResponse) => {
       Chat.find({ sender }).then((result) => {
+        const total = result.length;
         let contactsMade = 0;
         const contactsSeen = new Set();
         for (let i = 0; i < result.length; i += 1) {
@@ -38,9 +40,14 @@ export const addChat = (req, res) => {
             break;
           }
         }
-        if (contactsMade === contactAwardNum) {
+        if (contactsMade === contactAwardNum || total === sendingGoal) {
           Award.findOne({ userID: sender }).then((result3) => {
-            result3.messageThree = true;
+            if (contactsMade === contactAwardNum) {
+              result3.messageThree = true;
+            }
+            if (total === sendingGoal) {
+              result3.sentMessageGoal = true;
+            }
             result3.save();
           });
         }
