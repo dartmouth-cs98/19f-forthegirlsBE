@@ -18,6 +18,7 @@ export const addEvent = (req, res) => {
   const { description } = req.body;
   const { longitude } = req.body;
   const { latitude } = req.body;
+  const { eventPhotoURL } = req.body;
   const event = new Event();
   event.title = title;
   event.date = date;
@@ -26,6 +27,7 @@ export const addEvent = (req, res) => {
   event.description = description;
   event.latitude = latitude;
   event.longitude = longitude;
+  event.eventPhotoURL = eventPhotoURL;
   event.save()
     .then((resp) => {
       res.json(resp);
