@@ -8,6 +8,9 @@ import User from '../models/user_model';
 import Match from '../models/matches_model';
 import Award from '../models/award_model';
 
+// const π = Math.PI;
+
+
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
@@ -145,6 +148,11 @@ export const addToSurvey = (req, res) => {
                   if (result.collegeName === others[i].collegeName) {
                     matchRes2[0].score += 2;
                   }
+                  // calculate distance between latitude/longitudes of users
+                  const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
+                  console.log('DISTANCE IS:');
+                  console.log(Math.floor(distance / 1000000));
+                  matchRes2[0].score += Math.floor(distance / 1000000);
                   matchRes2[0].save();
                 }
               });
@@ -157,6 +165,11 @@ export const addToSurvey = (req, res) => {
               if (result.collegeName === others[i].collegeName) {
                 matchRes1[0].score += 2;
               }
+              // calculate distance between latitude/longitudes of users
+              const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
+              console.log('DISTANCE IS:');
+              console.log(Math.floor(distance / 1000000));
+              matchRes1[0].score += Math.floor(distance / 1000000);
               matchRes1[0].save();
             }
           });
@@ -170,3 +183,32 @@ export const addToSurvey = (req, res) => {
     res.status(500).json({ error });
   });
 };
+
+function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
+  console.log('LATITUDE1');
+  console.log(latitude1);
+  console.log('LONGITUDE1');
+  console.log(longitude1);
+  console.log('LATITUDE2');
+  console.log(latitude2);
+  console.log('LONGITUDE2');
+  console.log(longitude2);
+  const R = 6371e3; // metres
+  const φ1 = toRadians(latitude1);
+  const φ2 = toRadians(latitude2);
+  const Δφ = toRadians(latitude2 - latitude1);
+  const Δλ = toRadians(longitude2 - longitude1);
+
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2)
+          + Math.cos(φ1) * Math.cos(φ2)
+          * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const d = R * c;
+  return d;
+}
+
+function toRadians(number) {
+  return number * (Math.PI / 180);
+}
+// Number.prototype.toRadians = function () { return this * Math.PI / 180; };
