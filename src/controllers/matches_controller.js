@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import Match from '../models/matches_model';
 import User from '../models/user_model';
 import Award from '../models/award_model';
+import Blacklist from '../models/blacklist_model';
+
 
 dotenv.config({ silent: true });
 
@@ -49,43 +51,59 @@ export const removeMatch = (req, res) => {
 };
 
 export const getPotentialMatches = (req, res) => {
+  const blacklisted = [];
   const resultArray = [];
   const promises = [];
   const u = req.params.id;
+
   User.findOne({ username: u }).then((currUser) => {
-    User.find().then((response) => {
-      for (let i = 0; i < response.length; i += 1) {
-        if (currUser.id !== response[i].id) {
-          promises.push(
-            new Promise(((resolve, reject) => {
-              Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
-                if (matchRes1.length === 0) {
-                  Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
-                    if (matchRes2.length === 0) {
-                      resultArray.push(response[i].id);
-                    } else if (matchRes2[0].matched === false) {
+    Blacklist.find({ $or: [{ reporterID: currUser.id }, { reportedID: currUser.id }] }).then((blocked) => {
+      for (let j = 0; j < blocked.length; j += 1) {
+        if (blocked[j].block === true) {
+          if (blocked[j].reportedID.toString() === currUser.id.toString()) {
+            blacklisted.push(blocked[j].reporterID.toString());
+          } else if (blocked[j].reporterID.toString() === currUser.id.toString()) {
+            blacklisted.push(blocked[j].reportedID.toString());
+          }
+        }
+      }
+      console.log(blacklisted);
+      User.find().then((response) => {
+        for (let i = 0; i < response.length; i += 1) {
+          if (currUser.id !== response[i].id) {
+            if (blacklisted.includes(response[i].id.toString()) === false) {
+              promises.push(
+                new Promise(((resolve, reject) => {
+                  Match.find({ user1: currUser.id, user2: response[i].id }).then((matchRes1) => {
+                    if (matchRes1.length === 0) {
+                      Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
+                        if (matchRes2.length === 0) {
+                          resultArray.push(response[i].id);
+                        } else if (matchRes2[0].matched === false) {
+                          resultArray.push(response[i].id);
+                          resolve(resultArray);
+                        } else {
+                          resolve(resultArray);
+                        }
+                      });
+                    } else if (matchRes1[0].matched === false) {
                       resultArray.push(response[i].id);
                       resolve(resultArray);
                     } else {
                       resolve(resultArray);
                     }
                   });
-                } else if (matchRes1[0].matched === false) {
-                  resultArray.push(response[i].id);
-                  resolve(resultArray);
-                } else {
-                  resolve(resultArray);
-                }
-              });
-            })),
-          );
+                })),
+              );
+            }
+          }
         }
-      }
-      Promise.all(promises).then(() => {
-        resultArray.sort((item) => {
-          return item.score;
+        Promise.all(promises).then(() => {
+          resultArray.sort((item) => {
+            return item.score;
+          });
+          res.send(resultArray);
         });
-        res.send(resultArray);
       });
     });
   });
