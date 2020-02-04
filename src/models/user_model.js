@@ -21,6 +21,8 @@ const UserSchema = new Schema({
   currentJob: String,
   hometown: String,
   location: String,
+  longitude: Number,
+  latitude: Number,
 
   // CS:
   score_frontEnd: Boolean,
