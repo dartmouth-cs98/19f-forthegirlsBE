@@ -10,6 +10,7 @@ const EventSchema = new Schema({
   description: { type: String },
   longitude: Number,
   latitude: Number,
+  eventPhotoURL: String,
 });
 EventSchema.set('toJSON', {
   virtuals: true,
