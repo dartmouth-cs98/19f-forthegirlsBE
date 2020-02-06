@@ -18,6 +18,7 @@ export const addEvent = (req, res) => {
   const { description } = req.body;
   const { longitude } = req.body;
   const { latitude } = req.body;
+  const { authorID } = req.body;
   const { eventPhotoURL } = req.body;
   const event = new Event();
   event.title = title;
@@ -27,22 +28,33 @@ export const addEvent = (req, res) => {
   event.description = description;
   event.latitude = latitude;
   event.longitude = longitude;
+  event.authorID = authorID;
   event.eventPhotoURL = eventPhotoURL;
   event.save()
     .then((resp) => {
-      res.json(resp);
+      console.log('1');
+      Event.find({ authorID }).then((result) => {
+        console.log('2');
+        console.log(result);
+        if (result.length === 1) {
+          console.log('3');
+          Award.findOne({ userID: authorID }).then((awardRes) => {
+            console.log('4');
+            console.log(awardRes);
+            if (awardRes.firstEventAdded === false) {
+              console.log('5');
+              awardRes.firstEventAdded = true;
+              awardRes.save();
+            }
+          });
+        }
+        res.json(resp);
+      });
     })
     .catch((error) => {
       console.log(error);
     });
 };
-
-// for (let i = result.rsvps.length - 1; i >= 0; i -= 1) {
-//   if (result.rsvps[i] === userID) {
-//     // result.rsvps.splice(i, 1);
-//     break;
-//   }
-// }
 
 export const rsvpEvent = (req, res) => {
   const { userID } = req.body;
