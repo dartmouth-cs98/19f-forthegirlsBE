@@ -5,6 +5,7 @@ import * as EventController from './controllers/event_controller';
 import * as ChatController from './controllers/chat_controller';
 import * as AwardController from './controllers/award_controller';
 import * as BlacklistController from './controllers/blacklist_controller';
+import * as ActivityController from './controllers/activity_controller';
 
 import { requireSignin } from './services/passport';
 import signS3 from './services/s3';
@@ -40,6 +41,7 @@ router.get('/awards/checkAllAwards/:id', AwardController.checkAllAwards);
 router.put('/users/survey/:id', UserController.addToSurvey);
 router.put('/blacklist/report/:reporterID/:reportedID', BlacklistController.report);
 router.put('/blacklist/block/:reporterID/:reportedID', BlacklistController.block);
+router.put('/activity/add/:id', ActivityController.addActivity);
 router.get('/sign-s3', signS3);
 
 export default router;
