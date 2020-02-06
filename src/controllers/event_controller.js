@@ -32,17 +32,10 @@ export const addEvent = (req, res) => {
   event.eventPhotoURL = eventPhotoURL;
   event.save()
     .then((resp) => {
-      console.log('1');
       Event.find({ authorID }).then((result) => {
-        console.log('2');
-        console.log(result);
         if (result.length === 1) {
-          console.log('3');
           Award.findOne({ userID: authorID }).then((awardRes) => {
-            console.log('4');
-            console.log(awardRes);
             if (awardRes.firstEventAdded === false) {
-              console.log('5');
               awardRes.firstEventAdded = true;
               awardRes.save();
             }
