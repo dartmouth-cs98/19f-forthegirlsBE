@@ -48,11 +48,6 @@ export const addActivity = (req, res) => {
     result.save();
     res.json(result);
   }).catch((error) => {
-    const activity = new Activity();
-    activity.userID = req.params.id;
-    activity.allLogins.push(timestamp);
-    activity.lastLogin = timestamp;
-    activity.save();
-    res.json(activity);
+    res.json(error);
   });
 };
