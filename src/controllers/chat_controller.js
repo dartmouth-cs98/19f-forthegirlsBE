@@ -7,7 +7,7 @@ import Award from '../models/award_model';
 
 dotenv.config({ silent: true });
 
-const contactAwardNum = 5;
+const contactAwardNum = 4;
 const sendingGoal = 100;
 
 export const addChat = (req, res) => {
@@ -98,4 +98,32 @@ export const loadMore = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
+};
+
+export const totalSent = (req, res) => {
+  Chat.find({ sender: req.params.id })
+    .then((result) => {
+      const total = result.length;
+      res.json(total);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const totalContacted = (req, res) => {
+  let contactsMade = 0;
+
+  Chat.find({ sender: req.params.id }).then((result) => {
+    const contactsSeen = new Set();
+    for (let i = 0; i < result.length; i += 1) {
+      const currContact = result[i].receiver;
+      if (contactsSeen.has(currContact.toString()) === false) {
+        contactsMade += 1;
+        contactsSeen.add(currContact.toString());
+      }
+    }
+  }).then((result2) => {
+    res.json(contactsMade);
+  });
 };
