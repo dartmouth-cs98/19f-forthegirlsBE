@@ -4,10 +4,10 @@ import Activity from '../models/activity_model';
 
 dotenv.config({ silent: true });
 
-
 export const addActivity = (req, res) => {
-  const timestamp = Date.now();
-  Activity.findOneAndUpdate({ userID: req.params.id }).then((result) => {
+  const { userID } = req.params.id;
+  const { timestamp } = req.body;
+  Activity.findOneAndUpdate({ userID }).then((result) => {
     result.allLogins.push(timestamp);
     result.lastLogin = timestamp;
 
