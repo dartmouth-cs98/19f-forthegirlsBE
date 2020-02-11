@@ -7,7 +7,7 @@ dotenv.config({ silent: true });
 
 export const addActivity = (req, res) => {
   const timestamp = Date.now();
-  Activity.findOne({ userID: req.params.id }).then((result) => {
+  Activity.findOneAndUpdate({ userID: req.params.id }).then((result) => {
     result.allLogins.push(timestamp);
     result.lastLogin = timestamp;
 
