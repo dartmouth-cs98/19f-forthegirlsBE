@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import User from '../models/user_model';
 import Match from '../models/matches_model';
 import Award from '../models/award_model';
+import Activity from '../models/activity_model';
 
 // const π = Math.PI;
 
@@ -58,6 +59,9 @@ export const signup = (req, res, next) => {
                 const award = new Award();
                 award.userID = currUser.id;
                 award.save();
+                const activity = new Activity();
+                activity.userID = currUser.id;
+                activity.save();
                 User.find().then((response) => {
                   for (let i = 0; i < response.length; i += 1) {
                     if (currUser.id !== response[i].id) {
