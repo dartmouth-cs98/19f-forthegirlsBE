@@ -73,11 +73,11 @@ export const signup = (req, res, next) => {
 
                       Object.keys(response[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
                         console.log(key);
-                        if (currUser[key] === response[i][key]) {
+                        if (currUser[key] === response[i][key] && currUser[key] !== undefined) {
                           match.score++;
                         }
                       });
-                      if (currUser.collegeName === response[i].collegeName) {
+                      if (currUser.collegeName === response[i].collegeName && currUser.collegeName !== undefined) {
                         match.score += 2;
                       }
                       match.matched = false;
@@ -144,37 +144,52 @@ export const addToSurvey = (req, res) => {
                 if (matchRes2.length === 0) {
                   // resolve(resultArray);
                 } else {
+                  console.log('matchres2');
+                  // Reset match score to 0, then recalculate
+                  matchRes2[0].score = 0;
                   Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
                     if (result[key] === others[i][key] && result[key] !== undefined) {
                       matchRes2[0].score++;
+                      matchRes2[0].save();
                     }
                   });
-                  if (result.collegeName === others[i].collegeName) {
+                  if (result.collegeName === others[i].collegeName && result.collegeName !== undefined) {
                     matchRes2[0].score += 2;
+                    matchRes2[0].save();
                   }
-                  // calculate distance between latitude/longitudes of users
-                  const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
-                  console.log('DISTANCE IS:');
-                  console.log(Math.floor(distance / 1000000));
-                  matchRes2[0].score += Math.floor(distance / 1000000);
-                  matchRes2[0].save();
+                  if (result.latitude !== undefined && result.longitude !== undefined && others[i].latitude !== undefined && others[i].longitude !== undefined) {
+                    // calculate distance between latitude/longitudes of users
+                    const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
+                    console.log('DISTANCE IS:');
+                    console.log(Math.floor(distance / 1000000));
+                    matchRes2[0].score += Math.floor(distance / 1000000);
+                    matchRes2[0].save();
+                  }
                 }
               });
             } else {
+              console.log('matchres1');
+
+              // Reset match score to 0, then recalculate
+              matchRes1[0].score = 0;
               Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
                 if (result[key] === others[i][key] && result[key] !== undefined) {
                   matchRes1[0].score++;
+                  matchRes1[0].save();
                 }
               });
-              if (result.collegeName === others[i].collegeName) {
+              if (result.collegeName === others[i].collegeName && result.collegeName !== undefined) {
                 matchRes1[0].score += 2;
+                matchRes1[0].save();
               }
-              // calculate distance between latitude/longitudes of users
-              const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
-              console.log('DISTANCE IS:');
-              console.log(Math.floor(distance / 1000000));
-              matchRes1[0].score += Math.floor(distance / 1000000);
-              matchRes1[0].save();
+              if (result.latitude !== undefined && result.longitude !== undefined && others[i].latitude !== undefined && others[i].longitude !== undefined) {
+                // calculate distance between latitude/longitudes of users
+                const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
+                console.log('DISTANCE IS:');
+                console.log(Math.floor(distance / 1000000));
+                matchRes1[0].score += Math.floor(distance / 1000000);
+                matchRes1[0].save();
+              }
             }
           });
         }
