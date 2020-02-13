@@ -24,6 +24,7 @@ export const addMatch = (req, res) => {
         Match.find({ user1: resp2.id, user2: resp.id }).then((response2) => {
           if (response2.length !== 0) {
             response2[0].matched = true;
+            response2[0].save();
             res.json('match added');
           }
         });
