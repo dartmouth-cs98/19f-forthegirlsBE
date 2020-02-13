@@ -149,32 +149,34 @@ export const getConnectionRsvps = (req, res) => {
         .then((matchResponses) => {
           if (matchResponses.length !== 0) {
             for (let i = matchResponses.length - 1; i >= 0; i -= 1) {
-              if (matchResponses[i].user1.toString() === req.params.userId.toString()) {
-                const connection = matchResponses[i].user2;
-                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
-                  if (eventRsvps[j].toString() === connection.toString()) {
-                    promises.push(
-                      new Promise(((resolve, reject) => {
-                        User.findById({ _id: connection }).then((result) => {
-                          connectionsAttending.push(result);
-                          resolve(connectionsAttending);
-                        });
-                      })),
-                    );
+              if (matchResponses[i].matched === true) {
+                if (matchResponses[i].user1.toString() === req.params.userId.toString()) {
+                  const connection = matchResponses[i].user2;
+                  for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                    if (eventRsvps[j].toString() === connection.toString()) {
+                      promises.push(
+                        new Promise(((resolve, reject) => {
+                          User.findById({ _id: connection }).then((result) => {
+                            connectionsAttending.push(result);
+                            resolve(connectionsAttending);
+                          });
+                        })),
+                      );
+                    }
                   }
-                }
-              } else {
-                const connection = matchResponses[i].user1;
-                for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
-                  if (eventRsvps[j].toString() === connection.toString()) {
-                    promises.push(
-                      new Promise(((resolve, reject) => {
-                        User.findById({ _id: connection }).then((result) => {
-                          connectionsAttending.push(result);
-                          resolve(connectionsAttending);
-                        });
-                      })),
-                    );
+                } else {
+                  const connection = matchResponses[i].user1;
+                  for (let j = eventRsvps.length - 1; j >= 0; j -= 1) {
+                    if (eventRsvps[j].toString() === connection.toString()) {
+                      promises.push(
+                        new Promise(((resolve, reject) => {
+                          User.findById({ _id: connection }).then((result) => {
+                            connectionsAttending.push(result);
+                            resolve(connectionsAttending);
+                          });
+                        })),
+                      );
+                    }
                   }
                 }
               }
