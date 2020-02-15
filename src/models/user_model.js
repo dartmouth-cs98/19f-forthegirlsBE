@@ -6,6 +6,7 @@ const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   username: { type: String, unique: true },
   password: { type: String },
+  firstTime: Boolean,
   // matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   // survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
 
