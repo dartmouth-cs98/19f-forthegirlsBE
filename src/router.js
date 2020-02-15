@@ -19,6 +19,7 @@ router.post('/signup', UserController.signup);
 router.post('/signin', requireSignin, UserController.signin);
 router.get('/users/:id', UserController.getUser);
 router.put('/users/:id', UserController.editUser);
+router.put('users/updateVisit/:id', UserController.updateVisit);
 router.post('/matches/pair', MatchesController.addMatch);
 router.delete('/matches/delete/:id', MatchesController.removeMatch);
 router.get('/matches/getid/:id1/:id2', MatchesController.getMatchId);

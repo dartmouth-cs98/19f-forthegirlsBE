@@ -102,8 +102,10 @@ export const editUser = (req, res) => {
   const newName = req.body.username;
   const newPW = req.body.password;
   const { profileURL } = req.body;
+  const newFirstTime = req.body.firstTime;
   User.findOneAndUpdate({ username }).then((result) => {
     result.username = newName;
+    result.firstTime = newFirstTime;
     result.password = newPW;
     result.profileURL = profileURL;
     res.json({ result });
@@ -125,6 +127,16 @@ function tokenForUser(user) {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
+
+export const updateVisit = (req, res) => {
+  User.findById({ _id: req.params.id }).then((result) => {
+    const newResult = result;
+    newResult.firstTime = false;
+    newResult.save();
+  }).catch((error) => {
+    res.status(420).json({ error });
+  });
+};
 
 export const addToSurvey = (req, res) => {
   console.log('Did this');
