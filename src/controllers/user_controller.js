@@ -128,16 +128,6 @@ function tokenForUser(user) {
   return jwt.encode({ sub: user.id, iat: timestamp }, process.env.AUTH_SECRET);
 }
 
-export const updateVisit = (req, res) => {
-  User.findById({ _id: req.params.id }).then((result) => {
-    const newResult = result;
-    newResult.firstTime = false;
-    newResult.save();
-  }).catch((error) => {
-    res.status(420).json({ error });
-  });
-};
-
 export const addToSurvey = (req, res) => {
   console.log('Did this');
   const username = req.params.id;
