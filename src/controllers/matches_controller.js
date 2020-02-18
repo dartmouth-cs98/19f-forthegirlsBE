@@ -103,7 +103,12 @@ export const getPotentialMatches = (req, res) => {
           resultArray.sort((item) => {
             return item.score;
           });
-          res.send(resultArray);
+          // res.send(resultArray);
+          if (resultArray.length > 5) {
+            res.send(resultArray.splice(0, 5));
+          } else {
+            res.send(resultArray);
+          }
         });
       });
     });
