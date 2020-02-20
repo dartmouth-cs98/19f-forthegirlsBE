@@ -127,3 +127,33 @@ export const totalContacted = (req, res) => {
     res.json(contactsMade);
   });
 };
+
+export const getMyUnreadCount = (req, res) => {
+  Chat.find({ receiver: req.params.id, receiverRead: false })
+    .then((result) => {
+      const unread = result.length;
+      res.json(unread);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
+export const setToRead = (req, res) => {
+  Chat.find({ sender: req.body.senderID, receiver: req.body.receiverID })
+    .sort('timestamp')
+    .then((result) => {
+      for (let i = 0; i < result.length; i += 1) {
+        if (result[i].receiverRead === false) {
+          result[i].receiverRead = true;
+          result[i].save();
+        } else {
+          break;
+        }
+      }
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};

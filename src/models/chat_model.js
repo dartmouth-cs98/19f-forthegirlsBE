@@ -6,6 +6,7 @@ const ChatSchema = new Schema({
   receiver: { type: Schema.Types.ObjectId, ref: 'User' },
   timestamp: { type: Date },
   text: { type: String },
+  receiverRead: { type: Boolean, default: false },
 });
 ChatSchema.set('toJSON', {
   virtuals: true,
