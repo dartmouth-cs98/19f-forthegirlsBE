@@ -68,6 +68,7 @@ const UserSchema = new Schema({
   listenFollow: Number,
 
   profileURL: String,
+  pushTokens: [String],
 });
 
 // // returns keuys to compute score on

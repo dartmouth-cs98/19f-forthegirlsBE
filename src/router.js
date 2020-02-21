@@ -36,10 +36,6 @@ router.post('/chats/add', ChatController.addChat);
 router.get('/chats/getBetween/:id1/:id2', ChatController.getBetween);
 router.get('/chats/getToFrom/:id1/:id2', ChatController.getToFrom);
 router.get('/chats/loadMore/:id1/:id2/:loadNum', ChatController.loadMore);
-router.get('/chats/totalSent/:id', ChatController.totalSent);
-router.get('/chats/totalContacted/:id', ChatController.totalContacted);
-router.get('/chats/getMyUnreadCount/:id', ChatController.getMyUnreadCount);
-router.put('/chats/setToRead', ChatController.setToRead);
 router.get('/awards/checkAward/:id/:awardTitle', AwardController.checkAward);
 router.get('/awards/checkAllAwards/:id', AwardController.checkAllAwards);
 router.put('/users/survey/:id', UserController.addToSurvey);
@@ -47,5 +43,6 @@ router.put('/blacklist/report/:reporterID/:reportedID', BlacklistController.repo
 router.put('/blacklist/block/:reporterID/:reportedID', BlacklistController.block);
 router.put('/activity/add/:id', ActivityController.addActivity);
 router.get('/sign-s3', signS3);
+
 
 export default router;

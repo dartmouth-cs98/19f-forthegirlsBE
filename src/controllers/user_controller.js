@@ -15,8 +15,12 @@ import Activity from '../models/activity_model';
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
+  // include saving push token
   const { username } = req.body;
+  const { pushToken } = req.body;
   User.findOne({ username }).then((result) => {
+    result.pushTokens.push(pushToken);
+    result.save();
     Award.findOne({ userID: result.id })
       .then((result2) => {})
       .catch(() => {
@@ -32,10 +36,11 @@ export const signin = (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 export const signup = (req, res, next) => {
+  // include saving push token
   const { email } = req.body;
   const { username } = req.body;
   const { password } = req.body;
-
+  const { pushToken } = req.body;
   if (!email || !password || !username) {
     return res.status(422).send('You must provide email, username and password');
   }
@@ -53,6 +58,7 @@ export const signup = (req, res, next) => {
           user.username = username;
           user.password = password;
           user.firstTime = true;
+          user.pushTokens.push(pushToken);
           user.save()
             .then((resp) => {
               // add matches for all other users with matched boolean false
