@@ -1,14 +1,52 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-continue */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
 /* eslint-disable new-cap */
 import dotenv from 'dotenv';
+// import { Expo } from 'expo';
+import Expo from 'expo-server-sdk';
+import User from '../models/user_model';
+// import * as Permissions from 'expo-permissions';
 import Chat from '../models/chat_model';
 import Award from '../models/award_model';
+
+const expo = new Expo();
 
 dotenv.config({ silent: true });
 
 const contactAwardNum = 4;
 const sendingGoal = 100;
+
+const sendMessage = (message, savedPushTokens) => {
+  const notifications = [];
+  for (const pushToken of savedPushTokens) {
+    if (!Expo.isExpoPushToken(pushToken)) {
+      console.error(`Push token ${pushToken} is not a valid Expo push token`);
+      continue;
+    }
+    notifications.push({
+      to: pushToken,
+      sound: 'default',
+      title: 'Message received!',
+      body: message,
+      data: { message },
+    });
+  }
+  const chunks = expo.chunkPushNotifications(notifications);
+  (async () => {
+    for (const chunk of chunks) {
+      try {
+        const receipts = await expo.sendPushNotificationsAsync(chunk);
+        console.log(receipts);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  })();
+  // Defined in following step
+};
 
 export const addChat = (req, res) => {
   const { sender } = req.body;
@@ -21,7 +59,15 @@ export const addChat = (req, res) => {
   chat.receiver = receiver;
   chat.timestamp = timestamp;
   chat.text = text;
+  User.findById({ _id: receiver }).then((result) => {
+    console.log(result);
+    sendMessage(text, result.pushTokens);
+  }).catch((error) => {
+    res.status(500).json({ error });
+  });
   chat.save()
+  // add in sending notification logic if ncessary
+  // call handle push tokens
     // .then((response) => {
     //   res.json(response);
     // })
