@@ -58,7 +58,7 @@ export const signup = (req, res, next) => {
           user.username = username;
           user.password = password;
           user.firstTime = true;
-          user.pushTokens.push(pushToken);
+          user.pushTokens = [pushToken];
           user.save()
             .then((resp) => {
               // add matches for all other users with matched boolean false
