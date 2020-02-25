@@ -33,7 +33,14 @@ export const report = (req, res) => {
 export const block = (req, res) => {
   Blacklist.findOne({ reporterID: req.params.reporterID, reportedID: req.params.reportedID }).then((result) => {
     result.block = true;
-    result.save();
+    result.save()
+      .then((resp1) => {
+        Match.deleteOne({ $or: [{ user1: req.params.reporterID, user2: req.params.reportedID }, { user1: req.params.reportedID, user2: req.params.reporterID }] }).then((chatResult1) => {
+          Chat.deleteMany({ $or: [{ sender: req.params.reporterID, receiver: req.params.reportedID }, { sender: req.params.reportedID, receiver: req.params.reporterID }] }).then((matchResult1) => {
+            res.json(matchResult1);
+          });
+        });
+      });
     res.json(result);
   }).catch((error) => {
     const blacklist = new Blacklist();
