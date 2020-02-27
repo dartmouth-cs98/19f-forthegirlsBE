@@ -20,8 +20,11 @@ const contactAwardNum = 4;
 const sendingGoal = 100;
 
 const sendMessage = (message, savedPushTokens) => {
+  console.log('HERE IN SEND MESSAGE');
   const notifications = [];
   for (const pushToken of savedPushTokens) {
+    console.log('push token:');
+    console.log(pushToken);
     if (!Expo.isExpoPushToken(pushToken)) {
       console.error(`Push token ${pushToken} is not a valid Expo push token`);
       continue;
@@ -33,6 +36,8 @@ const sendMessage = (message, savedPushTokens) => {
       body: message,
       data: { message },
     });
+    console.log('message');
+    console.log(notifications);
   }
   const chunks = expo.chunkPushNotifications(notifications);
   (async () => {

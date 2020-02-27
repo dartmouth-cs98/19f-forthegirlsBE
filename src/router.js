@@ -20,6 +20,7 @@ router.post('/signin', requireSignin, UserController.signin);
 router.get('/users/:id', UserController.getUser);
 router.put('/users/:id', UserController.editUser);
 router.post('/matches/pair', MatchesController.addMatch);
+router.post('/matches/reject', MatchesController.rejectPotentialMatch);
 router.delete('/matches/delete/:id', MatchesController.removeMatch);
 router.get('/matches/getid/:id1/:id2', MatchesController.getMatchId);
 router.get('/matches/:id', MatchesController.getMatches);
