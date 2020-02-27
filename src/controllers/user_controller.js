@@ -88,6 +88,7 @@ export const signup = (req, res, next) => {
                         match.score += 2;
                       }
                       match.matched = false;
+                      match.rejected = false;
                       match.save();
                     }
                   }
@@ -212,6 +213,7 @@ export const addToSurvey = (req, res) => {
   });
 };
 
+// adapted from: https://www.movable-type.co.uk/scripts/latlong.html
 function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
   console.log('LATITUDE1');
   console.log(latitude1);

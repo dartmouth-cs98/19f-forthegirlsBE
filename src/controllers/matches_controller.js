@@ -45,6 +45,30 @@ export const addMatch = (req, res) => {
   });
 };
 
+export const rejectPotentialMatch = (req, res) => {
+  const { user1 } = req.body;
+  const { user2 } = req.body;
+  User.findOne({ username: user1 }).then((resp) => {
+    User.findOne({ username: user2 }).then((resp2) => {
+      Match.find({ user1: resp.id, user2: resp2.id }).then((response) => {
+        if (response.length !== 0) {
+          response[0].rejected = true;
+          response[0].save();
+          res.json('match rejected');
+        }
+        Match.find({ user1: resp2.id, user2: resp.id }).then((response2) => {
+          if (response2.length !== 0) {
+            response2[0].rejected = true;
+            response2[0].save();
+            res.json('match rejected');
+          }
+        });
+      });
+    });
+  });
+};
+
+
 export const removeMatch = (req, res) => {
   Match.deleteOne({ _id: req.params.id }).then((result) => {
     res.json({ result });
@@ -80,14 +104,14 @@ export const getPotentialMatches = (req, res) => {
                       Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                         if (matchRes2.length === 0) {
                           resultArray.push(response[i].id);
-                        } else if (matchRes2[0].matched === false) {
+                        } else if (matchRes2[0].matched === false && matchRes2[0].rejected === false) {
                           resultArray.push(response[i].id);
                           resolve(resultArray);
                         } else {
                           resolve(resultArray);
                         }
                       });
-                    } else if (matchRes1[0].matched === false) {
+                    } else if (matchRes1[0].matched === false && matchRes1[0].rejected === false) {
                       resultArray.push(response[i].id);
                       resolve(resultArray);
                     } else {
@@ -105,6 +129,7 @@ export const getPotentialMatches = (req, res) => {
           });
           // res.send(resultArray);
           if (resultArray.length > 5) {
+            console.log('array is greater than 5');
             res.send(resultArray.splice(0, 5));
           } else {
             res.send(resultArray);
