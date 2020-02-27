@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
+/* eslint-disable radix */
+
 import dotenv from 'dotenv';
 import Event from '../models/event_model';
 import Match from '../models/matches_model';
@@ -20,10 +22,51 @@ export const addEvent = (req, res) => {
   const { latitude } = req.body;
   const { authorID } = req.body;
   const { eventPhotoURL } = req.body;
+
+  const day = parseInt(date.substring(8, 10));
+  const year = parseInt(date.substring(11, 15));
+  const minute = parseInt(time.substring(3, 5));
+  const hour = parseInt(time.substring(0, 2));
+
+  const monthString = date.substring(4, 7);
+  let monthNum = 0;
+  if (monthString === 'Feb') {
+    monthNum = 1;
+  } else if (monthString === 'Mar') {
+    monthNum = 2;
+  } else if (monthString === 'Apr') {
+    monthNum = 3;
+  } else if (monthString === 'May') {
+    monthNum = 4;
+  } else if (monthString === 'Jun') {
+    monthNum = 5;
+  } else if (monthString === 'Jul') {
+    monthNum = 6;
+  } else if (monthString === 'Aug') {
+    monthNum = 7;
+  } else if (monthString === 'Sep') {
+    monthNum = 8;
+  } else if (monthString === 'Oct') {
+    monthNum = 9;
+  } else if (monthString === 'Nov') {
+    monthNum = 10;
+  } else if (monthString === 'Dec') {
+    monthNum = 11;
+  }
+
+  const ourDate = new Date();
+  ourDate.setDate(day);
+  ourDate.setYear(year);
+  ourDate.setHours(hour);
+  ourDate.setMinutes(minute);
+  ourDate.setMonth(monthNum);
+  console.log(ourDate);
+
   const event = new Event();
   event.title = title;
   event.date = date;
   event.time = time;
+  event.dateObject = ourDate;
   event.location = location;
   event.description = description;
   event.latitude = latitude;
@@ -32,17 +75,10 @@ export const addEvent = (req, res) => {
   event.eventPhotoURL = eventPhotoURL;
   event.save()
     .then((resp) => {
-      console.log('1');
       Event.find({ authorID }).then((result) => {
-        console.log('2');
-        console.log(result);
         if (result.length === 1) {
-          console.log('3');
           Award.findOne({ userID: authorID }).then((awardRes) => {
-            console.log('4');
-            console.log(awardRes);
             if (awardRes.firstEventAdded === false) {
-              console.log('5');
               awardRes.firstEventAdded = true;
               awardRes.save();
             }
@@ -99,8 +135,8 @@ export const unrsvpEvent = (req, res) => {
 export const getEvents = (req, res) => {
   // got this from mongoosejs docs online
   Event.find({})
+    .sort('dateObject')
     .then((result) => {
-      // res.json({ message: 'found all the posts!' });
       res.json(result);
     })
     .catch((error) => {

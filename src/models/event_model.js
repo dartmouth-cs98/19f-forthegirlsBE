@@ -7,6 +7,7 @@ const EventSchema = new Schema({
   title: { type: String },
   date: { type: String },
   time: { type: String },
+  dateObject: { type: Date },
   location: { type: String },
   description: { type: String },
   longitude: Number,
