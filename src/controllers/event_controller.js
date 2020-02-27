@@ -54,7 +54,6 @@ export const addEvent = (req, res) => {
     monthNum = 11;
   }
 
-
   const ourDate = new Date();
   ourDate.setDate(day);
   ourDate.setYear(year);
