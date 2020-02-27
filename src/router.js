@@ -39,6 +39,7 @@ router.get('/chats/loadMore/:id1/:id2/:loadNum', ChatController.loadMore);
 router.get('/chats/totalSent/:id', ChatController.totalSent);
 router.get('/chats/totalContacted/:id', ChatController.totalContacted);
 router.get('/chats/getMyUnreadCount/:id', ChatController.getMyUnreadCount);
+router.get('/chats/getMyUnreadWithIds/:id', ChatController.getMyUnreadWithIds);
 router.put('/chats/setToRead', ChatController.setToRead);
 router.get('/awards/checkAward/:id/:awardTitle', AwardController.checkAward);
 router.get('/awards/checkAllAwards/:id', AwardController.checkAllAwards);
