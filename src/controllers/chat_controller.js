@@ -175,8 +175,10 @@ export const totalContacted = (req, res) => {
 };
 
 export const getMyUnreadCount = (req, res) => {
+  console.log(req.params.id);
   Chat.find({ receiver: req.params.id, receiverRead: false })
     .then((result) => {
+      console.log(result);
       const unread = result.length;
       res.json(unread);
     })
@@ -184,6 +186,27 @@ export const getMyUnreadCount = (req, res) => {
       res.status(500).json({ error });
     });
 };
+
+export const getMyUnreadWithIds = (req, res) => {
+  const boldIDs = [];
+  const seen = new Set();
+  Chat.find({ receiver: req.params.id, receiverRead: false })
+    .then((result) => {
+      for (let i = 0; i < result.length; i += 1) {
+        const currContact = result[i].receiver;
+        if (seen.has(currContact.toString()) === false) {
+          boldIDs.push(currContact.toString());
+          seen.add(currContact.toString());
+        }
+      }
+      console.log(boldIDs);
+      res.json(boldIDs);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
+
 
 export const setToRead = (req, res) => {
   Chat.find({ sender: req.body.senderID, receiver: req.body.receiverID })
