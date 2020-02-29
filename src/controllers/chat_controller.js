@@ -198,7 +198,7 @@ export const getMyUnreadWithIds = (req, res) => {
   Chat.find({ receiver: req.params.id, receiverRead: false })
     .then((result) => {
       for (let i = 0; i < result.length; i += 1) {
-        const currContact = result[i].receiver;
+        const currContact = result[i].sender;
         if (seen.has(currContact.toString()) === false) {
           boldIDs.push(currContact.toString());
           seen.add(currContact.toString());
