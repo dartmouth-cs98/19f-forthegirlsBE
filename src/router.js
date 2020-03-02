@@ -15,6 +15,7 @@ const router = Router();
 router.get('/', (req, res) => {
   res.json({ message: 'welcome to our api!' });
 });
+router.get('/getAPI', EventController.getAPI);
 router.post('/signup', UserController.signup);
 router.post('/signin', requireSignin, UserController.signin);
 router.get('/users/:id', UserController.getUser);
