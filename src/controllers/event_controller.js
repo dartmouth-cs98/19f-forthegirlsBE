@@ -8,6 +8,7 @@ import Match from '../models/matches_model';
 import User from '../models/user_model';
 import Award from '../models/award_model';
 
+
 dotenv.config({ silent: true });
 
 const awardRSVPS = 2;
@@ -61,6 +62,7 @@ export const addEvent = (req, res) => {
   ourDate.setMinutes(minute);
   ourDate.setMonth(monthNum);
   console.log(ourDate);
+
 
   const event = new Event();
   event.title = title;
@@ -172,6 +174,12 @@ export const getYourRsvps = (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
+};
+
+export const getAPI = (req, res) => {
+  res.json(process.env.GOOGLE_API_KEY).catch((error) => {
+    res.status(500).json({ error });
+  });
 };
 
 export const getConnectionRsvps = (req, res) => {
