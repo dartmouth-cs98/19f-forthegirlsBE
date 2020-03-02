@@ -35,6 +35,7 @@ const sendMessage = (message, savedPushTokens) => {
       title: 'Message received!',
       body: message,
       data: { message },
+      badge: 1,
     });
     console.log('message');
     console.log(notifications);
