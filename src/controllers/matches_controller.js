@@ -79,7 +79,9 @@ export const removeMatch = (req, res) => {
 
 export const getPotentialMatches = (req, res) => {
   const blacklisted = [];
-  const resultArray = [];
+  // const resultArray = [];
+  const scoreToId = new Map();
+
   const promises = [];
   const u = req.params.id;
 
@@ -104,19 +106,19 @@ export const getPotentialMatches = (req, res) => {
                     if (matchRes1.length === 0) {
                       Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                         if (matchRes2.length === 0) {
-                          resultArray.push(response[i].id);
+                          scoreToId.set(matchRes1[0].score, response[i].id);
                         } else if (matchRes2[0].matched === false && matchRes2[0].rejected === false) {
-                          resultArray.push(response[i].id);
-                          resolve(resultArray);
+                          scoreToId.set(matchRes2[0].score, response[i].id);
+                          resolve(scoreToId);
                         } else {
-                          resolve(resultArray);
+                          resolve(scoreToId);
                         }
                       });
                     } else if (matchRes1[0].matched === false && matchRes1[0].rejected === false) {
-                      resultArray.push(response[i].id);
-                      resolve(resultArray);
+                      scoreToId.set(matchRes1[0].score, response[i].id);
+                      resolve(scoreToId);
                     } else {
-                      resolve(resultArray);
+                      resolve(scoreToId);
                     }
                   });
                 })),
@@ -125,16 +127,35 @@ export const getPotentialMatches = (req, res) => {
           }
         }
         Promise.all(promises).then(() => {
-          resultArray.sort((item) => {
-            return item.score;
+          const realResults = [];
+          const keys = [];
+
+          scoreToId.forEach((value, key) => {
+            keys.push(key);
           });
-          // res.send(resultArray);
-          if (resultArray.length > 5) {
-            res.send(resultArray.splice(0, 5));
-          } else {
-            res.send(resultArray);
+          keys.sort();
+          for (let i = keys.length - 1; i >= 0; i -= 1) {
+            realResults.push(scoreToId.get(keys[i]));
           }
+          if (realResults.length > 5) {
+            res.send(realResults.splice(0, 5));
+          } else {
+            res.send(realResults);
+          }
+
+          res.send(realResults);
         });
+        // Promise.all(promises).then(() => {
+        //   scoreToId.sort((item) => {
+        //     return item.score;
+        //   });
+        //   // res.send(resultArray);
+        //   if (scoreToId.length > 5) {
+        //     res.send(scoreToId.splice(0, 5));
+        //   } else {
+        //     res.send(scoreToId);
+        //   }
+        // });
       });
     });
   });
