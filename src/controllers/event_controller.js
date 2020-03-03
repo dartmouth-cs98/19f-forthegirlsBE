@@ -136,7 +136,13 @@ export const unrsvpEvent = (req, res) => {
 
 export const getEvents = (req, res) => {
   // got this from mongoosejs docs online
-  Event.find({})
+  Event.find(
+    {
+      dateObject: {
+        $gte: Date.now(),
+      },
+    },
+  )
     .sort('dateObject')
     .then((result) => {
       res.json(result);
@@ -167,7 +173,12 @@ export const getRsvpCount = (req, res) => {
 };
 
 export const getYourRsvps = (req, res) => {
-  Event.find({ rsvps: { $in: [req.params.id] } })
+  Event.find({
+    rsvps: { $in: [req.params.id] },
+    dateObject: {
+      $gte: Date.now(),
+    },
+  })
     .then((result) => {
       res.json(result);
     })
