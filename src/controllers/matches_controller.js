@@ -70,8 +70,10 @@ export const rejectPotentialMatch = (req, res) => {
 
 
 export const removeMatch = (req, res) => {
-  Match.deleteOne({ _id: req.params.id }).then((result) => {
-    res.json({ result });
+  Match.findOne({ _id: req.params.id }).then((result) => {
+    result.matched = false;
+    result.save();
+    res.json('match deleted');
   });
 };
 
