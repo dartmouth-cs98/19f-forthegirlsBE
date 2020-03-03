@@ -94,7 +94,6 @@ export const getPotentialMatches = (req, res) => {
           }
         }
       }
-      console.log(blacklisted);
       User.find().then((response) => {
         for (let i = 0; i < response.length; i += 1) {
           if (currUser.id !== response[i].id) {
@@ -131,7 +130,6 @@ export const getPotentialMatches = (req, res) => {
           });
           // res.send(resultArray);
           if (resultArray.length > 5) {
-            console.log('array is greater than 5');
             res.send(resultArray.splice(0, 5));
           } else {
             res.send(resultArray);
@@ -143,8 +141,8 @@ export const getPotentialMatches = (req, res) => {
 };
 
 export const getMatches = (req, res) => {
-  const resultArray = [];
   const promises = [];
+  const usernameToId = new Map();
   const u = req.params.id;
   User.findOne({ username: u }).then((currUser) => {
     User.find().then((response) => {
@@ -156,19 +154,19 @@ export const getMatches = (req, res) => {
                 if (matchRes1.length === 0) {
                   Match.find({ user1: response[i].id, user2: currUser.id }).then((matchRes2) => {
                     if (matchRes2.length === 0) {
-                      resolve(resultArray);
+                      resolve(usernameToId);
                     } else if (matchRes2[0].matched === true) {
-                      resultArray.push(response[i].id);
-                      resolve(resultArray);
+                      usernameToId.set(response[i].username, response[i].id);
+                      resolve(usernameToId);
                     } else {
-                      resolve(resultArray);
+                      resolve(usernameToId);
                     }
                   });
                 } else if (matchRes1[0].matched === true) {
-                  resultArray.push(response[i].id);
-                  resolve(resultArray);
+                  usernameToId.set(response[i].username, response[i].id);
+                  resolve(usernameToId);
                 } else {
-                  resolve(resultArray);
+                  resolve(usernameToId);
                 }
               });
             })),
@@ -176,7 +174,18 @@ export const getMatches = (req, res) => {
         }
       }
       Promise.all(promises).then(() => {
-        res.send(resultArray);
+        const realResults = [];
+        const keys = [];
+
+        usernameToId.forEach((value, key) => {
+          keys.push(key);
+        });
+        keys.sort();
+        for (let i = 0; i < keys.length; i += 1) {
+          realResults.push(usernameToId.get(keys[i]));
+        }
+
+        res.send(realResults);
       });
     });
   });
