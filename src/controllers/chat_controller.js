@@ -19,7 +19,7 @@ dotenv.config({ silent: true });
 const contactAwardNum = 4;
 const sendingGoal = 100;
 
-const sendMessage = (message, savedPushTokens) => {
+const sendMessage = (message, savedPushTokens, username) => {
   console.log('HERE IN SEND MESSAGE');
   const notifications = [];
   for (const pushToken of savedPushTokens) {
@@ -32,7 +32,7 @@ const sendMessage = (message, savedPushTokens) => {
     notifications.push({
       to: pushToken,
       sound: 'default',
-      title: 'Message received!',
+      title: username,
       body: message,
       data: { message },
       badge: 1,
@@ -67,7 +67,9 @@ export const addChat = (req, res) => {
   chat.text = text;
   User.findById({ _id: receiver }).then((result) => {
     console.log(result);
-    sendMessage(text, result.pushTokens);
+    User.findById({ _id: sender }).then((senderRes) => {
+      sendMessage(text, result.pushTokens, senderRes.username);
+    });
   }).catch((error) => {
     res.status(500).json({ error });
   });
