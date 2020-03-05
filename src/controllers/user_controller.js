@@ -19,8 +19,14 @@ export const signin = (req, res, next) => {
   const { username } = req.body;
   const { pushToken } = req.body;
   User.findOne({ username }).then((result) => {
-    result.pushTokens.push(pushToken);
-    result.save();
+    console.log('does result contain push tokens');
+    console.log(result.pushTokens.includes(pushToken));
+    console.log(result.pushTokens);
+    if (!result.pushTokens.includes(pushToken)) {
+      console.log('HEREE');
+      result.pushTokens.push(pushToken);
+      result.save();
+    }
     Award.findOne({ userID: result.id })
       .then((result2) => {})
       .catch(() => {
