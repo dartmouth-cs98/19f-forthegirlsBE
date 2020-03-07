@@ -97,19 +97,22 @@ export const addEvent = (req, res) => {
 export const rsvpEvent = (req, res) => {
   const { userID } = req.body;
   Event.findById({ _id: req.params.id }).then((result) => {
-    result.rsvps.push(userID);
-
-    Event.find({ rsvps: { $in: [userID] } })
-      .then((result2) => {
-        if (result2.length >= awardRSVPS) {
-          Award.findOne({ userID }).then((result3) => {
-            if (result3.rsvpThree === false) {
-              result3.rsvpThree = true;
-              result3.save();
-            }
-          });
-        }
-      });
+    if (!result.rsvps.includes(userID)) {
+      result.rsvps.push(userID);
+      Event.find({ rsvps: { $in: [userID] } })
+        .then((result2) => {
+          if (result2.length >= awardRSVPS) {
+            Award.findOne({ userID }).then((result3) => {
+              if (result3.rsvpThree === false) {
+                result3.rsvpThree = true;
+                result3.save();
+              }
+            });
+          }
+        });
+    } else {
+      console.log('already signed up!');
+    }
 
     res.json(result.rsvps);
     result.save();
