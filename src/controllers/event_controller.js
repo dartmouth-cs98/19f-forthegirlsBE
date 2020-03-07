@@ -57,12 +57,9 @@ export const addEvent = (req, res) => {
 
   const ourDate = new Date();
   ourDate.setDate(day);
-  ourDate.setYear(year);
-  ourDate.setHours(hour);
-  ourDate.setMinutes(minute);
   ourDate.setMonth(monthNum);
-  console.log(ourDate);
-
+  ourDate.setYear(year);
+  ourDate.setHours(hour, minute, 0);
 
   const event = new Event();
   event.title = title;
@@ -138,11 +135,13 @@ export const unrsvpEvent = (req, res) => {
 };
 
 export const getEvents = (req, res) => {
+  const rightNow = new Date();
+
   // got this from mongoosejs docs online
   Event.find(
     {
       dateObject: {
-        $gte: Date.now(),
+        $gte: rightNow,
       },
     },
   )
