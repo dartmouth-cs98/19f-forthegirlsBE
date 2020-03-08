@@ -4,9 +4,7 @@ import Blacklist from '../models/blacklist_model';
 import Match from '../models/matches_model';
 import Chat from '../models/chat_model';
 
-
 dotenv.config({ silent: true });
-
 
 export const report = (req, res) => {
   Blacklist.findOne({ reporterID: req.params.reporterID, reportedID: req.params.reportedID }).then((result) => {
