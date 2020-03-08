@@ -1,13 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable consistent-return */
 /* eslint-disable radix */
-
 import dotenv from 'dotenv';
 import Event from '../models/event_model';
 import Match from '../models/matches_model';
 import User from '../models/user_model';
 import Award from '../models/award_model';
-
 
 dotenv.config({ silent: true });
 
@@ -87,7 +85,7 @@ export const addEvent = (req, res) => {
       });
     })
     .catch((error) => {
-      console.log(error);
+      res.status(500).json({ error });
     });
 };
 
@@ -107,8 +105,6 @@ export const rsvpEvent = (req, res) => {
             });
           }
         });
-    } else {
-      console.log('already signed up!');
     }
 
     res.json(result.rsvps);

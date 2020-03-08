@@ -23,7 +23,7 @@ export const report = (req, res) => {
         res.json(resp);
       })
       .catch((error2) => {
-        console.log(error2);
+        res.status(500).json({ error2 });
       });
   });
 };
@@ -56,7 +56,7 @@ export const block = (req, res) => {
         });
       })
       .catch((error2) => {
-        console.log(error2);
+        res.status(500).json({ error2 });
       });
   });
 };

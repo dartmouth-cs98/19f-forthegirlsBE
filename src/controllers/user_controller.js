@@ -9,9 +9,6 @@ import Match from '../models/matches_model';
 import Award from '../models/award_model';
 import Activity from '../models/activity_model';
 
-// const π = Math.PI;
-
-
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
@@ -23,7 +20,6 @@ export const signin = (req, res, next) => {
     console.log(result.pushTokens.includes(pushToken));
     console.log(result.pushTokens);
     if (!result.pushTokens.includes(pushToken)) {
-      console.log('HEREE');
       result.pushTokens.push(pushToken);
       result.save();
     }
@@ -103,7 +99,7 @@ export const signup = (req, res, next) => {
               res.send({ token: tokenForUser(user), username: req.body.username, id: user.id });
             })
             .catch((error) => {
-              console.log(error);
+              res.status(500).json({ error });
             });
         }
       });
@@ -128,7 +124,6 @@ export const editUser = (req, res) => {
 
 export const getUser = (req, res) => {
   User.findById({ _id: req.params.id }).then((result) => {
-    console.log(result);
     res.json({ result });
   }).catch((error) => {
     res.status(500).json({ error });
@@ -142,12 +137,10 @@ function tokenForUser(user) {
 }
 
 export const addToSurvey = (req, res) => {
-  console.log('Did this');
   const username = req.params.id;
   User.findOne({ username }).then((result) => {
     const fields = Object.keys(req.body);
     for (let i = 0; i < fields.length; i++) {
-      console.log(fields[i]);
       result[fields[i]] = req.body[fields[i]];
     }
     // recalculate score
@@ -157,10 +150,9 @@ export const addToSurvey = (req, res) => {
           Match.find({ user1: result.id, user2: others[i].id }).then((matchRes1) => {
             if (matchRes1.length === 0) {
               Match.find({ user1: others[i].id, user2: result.id }).then((matchRes2) => {
-                if (matchRes2.length === 0) {
+                if (matchRes2.length !== 0) {
                   // resolve(resultArray);
                 } else {
-                  console.log('matchres2');
                   // Reset match score to 0, then recalculate
                   matchRes2[0].score = 0;
                   Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
@@ -176,16 +168,12 @@ export const addToSurvey = (req, res) => {
                   if (result.latitude !== undefined && result.longitude !== undefined && others[i].latitude !== undefined && others[i].longitude !== undefined) {
                     // calculate distance between latitude/longitudes of users
                     const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
-                    console.log('DISTANCE IS:');
-                    console.log(Math.floor(distance / 1000000));
                     matchRes2[0].score += Math.floor(distance / 1000000);
                     matchRes2[0].save();
                   }
                 }
               });
             } else {
-              console.log('matchres1');
-
               // Reset match score to 0, then recalculate
               matchRes1[0].score = 0;
               Object.keys(others[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
@@ -201,8 +189,6 @@ export const addToSurvey = (req, res) => {
               if (result.latitude !== undefined && result.longitude !== undefined && others[i].latitude !== undefined && others[i].longitude !== undefined) {
                 // calculate distance between latitude/longitudes of users
                 const distance = calculateDistance(result.latitude, result.longitude, others[i].latitude, others[i].longitude);
-                console.log('DISTANCE IS:');
-                console.log(Math.floor(distance / 1000000));
                 matchRes1[0].score += Math.floor(distance / 1000000);
                 matchRes1[0].save();
               }
@@ -212,7 +198,6 @@ export const addToSurvey = (req, res) => {
       }
     });
     result.save();
-    console.log(fields);
     res.json({ result });
   }).catch((error) => {
     res.status(500).json({ error });
@@ -221,14 +206,6 @@ export const addToSurvey = (req, res) => {
 
 // adapted from: https://www.movable-type.co.uk/scripts/latlong.html
 function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
-  console.log('LATITUDE1');
-  console.log(latitude1);
-  console.log('LONGITUDE1');
-  console.log(longitude1);
-  console.log('LATITUDE2');
-  console.log(latitude2);
-  console.log('LONGITUDE2');
-  console.log(longitude2);
   const R = 6371e3; // metres
   const φ1 = toRadians(latitude1);
   const φ2 = toRadians(latitude2);

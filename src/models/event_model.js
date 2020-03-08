@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// create a EventSchema with a title field
 const EventSchema = new Schema({
   authorID: { type: Schema.Types.ObjectId, ref: 'User' },
   rsvps: [{ type: String }],

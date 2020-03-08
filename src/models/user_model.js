@@ -7,8 +7,6 @@ const UserSchema = new Schema({
   username: { type: String, unique: true },
   password: { type: String },
   firstTime: Boolean,
-  // matches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  // survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
 
   // SURVEY QUESTIONS:
 
@@ -91,8 +89,6 @@ UserSchema.pre('save', function beforeUserModelSave(next) {
   user.password = hash;
   return next();
 
-  // TODO: do stuff here
-
   // when done run the **next** callback with no arguments
   // call next with an error if you encounter one
   // return next();
@@ -100,9 +96,6 @@ UserSchema.pre('save', function beforeUserModelSave(next) {
 //  note use of named function rather than arrow notation
 //  this arrow notation is lexically scoped and prevents binding scope, which mongoose relies on
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
-  console.log('in compare pass');
-  // const user = this;
-  // console.log(user.password);
   bcrypt.compare(candidatePassword, this.password, (err, res) => {
     if (res) {
       return callback(null, res);
@@ -111,7 +104,7 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
     }
   });
 
-//   return callback(null, bcrypt.compareSync(candidatePassword, user.password));
+  // return callback(null, bcrypt.compareSync(candidatePassword, user.password));
   // return callback(null, comparisonResult) for success
   // or callback(error) in the error case
 };

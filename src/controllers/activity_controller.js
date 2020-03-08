@@ -30,7 +30,6 @@ export const addActivity = (req, res) => {
       }
     }
 
-
     for (let i = result.allLogins.length - 2; i >= 0; i -= 1) {
       const currDate = result.allLogins[i];
       const currDay = currDate.getDate();
