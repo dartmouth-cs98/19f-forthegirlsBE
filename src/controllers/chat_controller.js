@@ -5,10 +5,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable new-cap */
 import dotenv from 'dotenv';
-// import { Expo } from 'expo';
 import Expo from 'expo-server-sdk';
 import User from '../models/user_model';
-// import * as Permissions from 'expo-permissions';
 import Chat from '../models/chat_model';
 import Award from '../models/award_model';
 
@@ -20,13 +18,9 @@ const contactAwardNum = 4;
 const sendingGoal = 100;
 
 const sendMessage = (message, savedPushTokens, username) => {
-  console.log('HERE IN SEND MESSAGE');
   const notifications = [];
   for (const pushToken of savedPushTokens) {
-    console.log('push token:');
-    console.log(pushToken);
     if (!Expo.isExpoPushToken(pushToken)) {
-      console.error(`Push token ${pushToken} is not a valid Expo push token`);
       continue;
     }
     notifications.push({
@@ -37,8 +31,6 @@ const sendMessage = (message, savedPushTokens, username) => {
       data: { message },
       badge: 1,
     });
-    console.log('message');
-    console.log(notifications);
   }
   const chunks = expo.chunkPushNotifications(notifications);
   (async () => {
@@ -66,7 +58,6 @@ export const addChat = (req, res) => {
   chat.timestamp = timestamp;
   chat.text = text;
   User.findById({ _id: receiver }).then((result) => {
-    console.log(result);
     User.findById({ _id: sender }).then((senderRes) => {
       sendMessage(text, result.pushTokens, senderRes.username);
     });
@@ -109,7 +100,7 @@ export const addChat = (req, res) => {
       res.json(saveResponse);
     })
     .catch((error) => {
-      console.log(error);
+      res.status(500).json({ error });
     });
 };
 
@@ -183,10 +174,8 @@ export const totalContacted = (req, res) => {
 };
 
 export const getMyUnreadCount = (req, res) => {
-  console.log(req.params.id);
   Chat.find({ receiver: req.params.id, receiverRead: false })
     .then((result) => {
-      console.log(result);
       const unread = result.length;
       res.json(unread);
     })
@@ -207,7 +196,6 @@ export const getMyUnreadWithIds = (req, res) => {
           seen.add(currContact.toString());
         }
       }
-      console.log(boldIDs);
       res.json(boldIDs);
     })
     .catch((error) => {

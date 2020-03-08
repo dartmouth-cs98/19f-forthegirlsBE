@@ -7,7 +7,6 @@ import User from '../models/user_model';
 import Award from '../models/award_model';
 import Blacklist from '../models/blacklist_model';
 
-
 dotenv.config({ silent: true });
 
 export const addMatch = (req, res) => {
@@ -79,7 +78,6 @@ export const removeMatch = (req, res) => {
 
 export const getPotentialMatches = (req, res) => {
   const blacklisted = [];
-  // const resultArray = [];
   const scoreToId = new Map();
 
   const promises = [];
@@ -145,17 +143,6 @@ export const getPotentialMatches = (req, res) => {
 
           res.send(realResults);
         });
-        // Promise.all(promises).then(() => {
-        //   scoreToId.sort((item) => {
-        //     return item.score;
-        //   });
-        //   // res.send(resultArray);
-        //   if (scoreToId.length > 5) {
-        //     res.send(scoreToId.splice(0, 5));
-        //   } else {
-        //     res.send(scoreToId);
-        //   }
-        // });
       });
     });
   });

@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// create a EventSchema with a title field
 const BlacklistSchema = new Schema({
   reporterID: { type: Schema.Types.ObjectId, ref: 'User' },
   reportedID: { type: Schema.Types.ObjectId, ref: 'User' },

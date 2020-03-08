@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// create a EventSchema with a title field
 const AwardSchema = new Schema({
   userID: { type: Schema.Types.ObjectId, ref: 'User' },
   rsvpThree: { type: Boolean, default: false },
