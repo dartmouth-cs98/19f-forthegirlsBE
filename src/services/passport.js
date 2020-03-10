@@ -1,3 +1,5 @@
+// Borrowed from CS52 provided code :)
+
 // lets import some stuff
 import passport from 'passport';
 import LocalStrategy from 'passport-local';

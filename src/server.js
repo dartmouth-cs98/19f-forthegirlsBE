@@ -1,3 +1,5 @@
+// Borrowed from CS52 provided code :)
+
 /* eslint-disable no-restricted-syntax */
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -5,22 +7,8 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
-// import Expo from 'expo-server-sdk';
 import User from './models/user_model';
 import apiRouter from './router';
-
-// const expo = new Expo();
-
-// const savedPushTokens = [];
-
-// do saving of token in signin/signup user instead in the user model as a string
-// const saveToken = (token) => {
-//   if (savedPushTokens.indexOf(token === -1)) {
-//     savedPushTokens.push(token);
-//   }
-// };
-// just send one message to one user
-// extract into services/notifications.js and import in chat_controller to send
 
 // DB Setup
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/ftg';
