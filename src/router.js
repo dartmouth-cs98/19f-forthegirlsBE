@@ -16,16 +16,20 @@ router.get('/', (req, res) => {
   res.json({ message: 'welcome to our api!' });
 });
 router.get('/getAPI', EventController.getAPI);
+
 router.post('/signup', UserController.signup);
 router.post('/signin', requireSignin, UserController.signin);
 router.get('/users/:id', UserController.getUser);
 router.put('/users/:id', UserController.editUser);
+router.put('/users/survey/:id', UserController.addToSurvey);
+
 router.post('/matches/pair', MatchesController.addMatch);
 router.post('/matches/reject', MatchesController.rejectPotentialMatch);
 router.delete('/matches/delete/:id', MatchesController.removeMatch);
 router.get('/matches/getid/:id1/:id2', MatchesController.getMatchId);
 router.get('/matches/:id', MatchesController.getMatches);
 router.get('/matches/potential/:id', MatchesController.getPotentialMatches);
+
 router.get('/events/', EventController.getEvents);
 router.post('/events/add', EventController.addEvent);
 router.get('/events/:id', EventController.getEvent);
@@ -34,6 +38,7 @@ router.post('/events/unrsvp/:id', EventController.unrsvpEvent);
 router.get('/events/rsvp/count/:id', EventController.getRsvpCount);
 router.get('/events/rsvp/your/:id', EventController.getYourRsvps);
 router.get('/events/rsvp/connections/:userId/:eventId', EventController.getConnectionRsvps);
+
 router.post('/chats/add', ChatController.addChat);
 router.get('/chats/getBetween/:id1/:id2', ChatController.getBetween);
 router.get('/chats/getToFrom/:id1/:id2', ChatController.getToFrom);
@@ -43,11 +48,13 @@ router.get('/chats/totalContacted/:id', ChatController.totalContacted);
 router.get('/chats/getMyUnreadCount/:id', ChatController.getMyUnreadCount);
 router.get('/chats/getMyUnreadWithIds/:id', ChatController.getMyUnreadWithIds);
 router.put('/chats/setToRead', ChatController.setToRead);
+
 router.get('/awards/checkAward/:id/:awardTitle', AwardController.checkAward);
 router.get('/awards/checkAllAwards/:id', AwardController.checkAllAwards);
-router.put('/users/survey/:id', UserController.addToSurvey);
+
 router.put('/blacklist/report/:reporterID/:reportedID', BlacklistController.report);
 router.put('/blacklist/block/:reporterID/:reportedID', BlacklistController.block);
+
 router.put('/activity/add/:id', ActivityController.addActivity);
 router.get('/sign-s3', signS3);
 

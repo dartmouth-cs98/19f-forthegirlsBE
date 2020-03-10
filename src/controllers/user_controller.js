@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable no-loop-func */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/prefer-default-export */
@@ -12,13 +13,9 @@ import Activity from '../models/activity_model';
 dotenv.config({ silent: true });
 
 export const signin = (req, res, next) => {
-  // include saving push token
   const { username } = req.body;
   const { pushToken } = req.body;
   User.findOne({ username }).then((result) => {
-    console.log('does result contain push tokens');
-    console.log(result.pushTokens.includes(pushToken));
-    console.log(result.pushTokens);
     if (!result.pushTokens.includes(pushToken)) {
       result.pushTokens.push(pushToken);
       result.save();
@@ -38,7 +35,6 @@ export const signin = (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 export const signup = (req, res, next) => {
-  // include saving push token
   const { email } = req.body;
   const { username } = req.body;
   const { password } = req.body;
@@ -81,7 +77,6 @@ export const signup = (req, res, next) => {
 
 
                       Object.keys(response[i].schema.tree).filter((k) => { return k.match(/^score.*/); }).forEach((key) => {
-                        console.log(key);
                         if (currUser[key] === response[i][key] && currUser[key] !== undefined) {
                           match.score++;
                         }
@@ -151,7 +146,6 @@ export const addToSurvey = (req, res) => {
             if (matchRes1.length === 0) {
               Match.find({ user1: others[i].id, user2: result.id }).then((matchRes2) => {
                 if (matchRes2.length !== 0) {
-                  // resolve(resultArray);
                 } else {
                   // Reset match score to 0, then recalculate
                   matchRes2[0].score = 0;
@@ -204,9 +198,9 @@ export const addToSurvey = (req, res) => {
   });
 };
 
-// adapted from: https://www.movable-type.co.uk/scripts/latlong.html
+// borrowed from: https://www.movable-type.co.uk/scripts/latlong.html
 function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
-  const R = 6371e3; // metres
+  const R = 6371e3;
   const φ1 = toRadians(latitude1);
   const φ2 = toRadians(latitude2);
   const Δφ = toRadians(latitude2 - latitude1);
@@ -224,4 +218,3 @@ function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
 function toRadians(number) {
   return number * (Math.PI / 180);
 }
-// Number.prototype.toRadians = function () { return this * Math.PI / 180; };

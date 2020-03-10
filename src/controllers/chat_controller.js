@@ -43,7 +43,6 @@ const sendMessage = (message, savedPushTokens, username) => {
       }
     }
   })();
-  // Defined in following step
 };
 
 export const addChat = (req, res) => {
@@ -65,11 +64,6 @@ export const addChat = (req, res) => {
     res.status(500).json({ error });
   });
   chat.save()
-  // add in sending notification logic if ncessary
-  // call handle push tokens
-    // .then((response) => {
-    //   res.json(response);
-    // })
     .then((saveResponse) => {
       Chat.find({ sender }).then((result) => {
         const total = result.length;
@@ -104,12 +98,6 @@ export const addChat = (req, res) => {
     });
 };
 
-// From mongoose documentation
-// MyModel.find({ name: 'john', age: { $gte: 18 }});
-
-// Stackoverflow for pagination
-// .limit( 10 )
-// .sort( '-createdOn' )
 export const getBetween = (req, res) => {
   Chat.find({ $or: [{ sender: req.params.id2, receiver: req.params.id1 }, { sender: req.params.id1, receiver: req.params.id2 }] })
     .sort('timestamp')
