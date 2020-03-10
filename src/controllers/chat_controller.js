@@ -98,6 +98,8 @@ export const addChat = (req, res) => {
     });
 };
 
+// From mongoose documentation: https://mongoosejs.com/docs/api/model.html
+// From stackoverflow: https://stackoverflow.com/questions/5539955/how-to-paginate-with-mongoose-in-node-js/14878685
 export const getBetween = (req, res) => {
   Chat.find({ $or: [{ sender: req.params.id2, receiver: req.params.id1 }, { sender: req.params.id1, receiver: req.params.id2 }] })
     .sort('timestamp')
